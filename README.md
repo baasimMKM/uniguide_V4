@@ -1,65 +1,75 @@
 # UniPath LK
 
-An evidence-aware education pathway explorer for Sri Lankan post-A/L students across **12 fields**, with **37 real programmes from seven providers**. Explore current routes, compare their conditions and consider whether another A/L sitting fits your circumstances.
+**Every path after A/Ls — checked, costed, and honest.**
 
-Built with **Jac 0.16.7, Python 3.12 and byLLM 0.6.19**. The native Jac client and graph/rule engine share one application. This is a hackathon prototype with a small researched catalogue, not a national directory or an admission service.
+### [▶ Try the live demo](https://preview-jac-sbx-0c560a8507fb4a2b937c4cb4dcaca9b9.jachammer.app/)
 
-## Current experience
+UniPath LK helps Sri Lankan students who have just finished their A/Ls compare realistic next steps in **12 fields**, from IT and engineering to tourism, law and agriculture. It weighs each route against the student's actual results, savings, monthly budget, location and study preferences. It also shows clearly what is still unknown.
 
-- Compact discovery dashboard with a desktop profile sidebar, collapsible mobile profile and live Asia/Colombo date/time.
-- Up to three server-checked pathways, a side-by-side comparison, independent evidence disclosures, actual graph connections and planning activity.
-- A/L retake scenario comparing user-estimated preparation time/spending, extra initial savings needed and separately calculated income forgone with routes available now.
-- Show/hide study-guide panel with optional Gemini assistance. Gemini selects supported topics, programme IDs and curated tips; all displayed facts, numeric values and links come from server-owned records.
-- Direct and multi-stage graph search, transition prerequisites, isolated branch state, pass/fail/unknown checks and an explicit travel/delay stress scenario.
-- Six practical additions: SLITHM craft cookery/reception and DTET electrician, welding, tailoring and food processing. Complete current costs and intakes remain unconfirmed.
+> UniPath LK is a hackathon prototype with a small, researched catalogue (37 real programmes from seven providers). It is not a national directory and never makes an admission decision.
 
-Another examination sitting and eligibility for UGC internal admission are different questions. The retake view cites the **2025/2026** handbook with its scope, and historical examination instructions are clearly labelled. No predicted grade, Z-score probability, examination permission or university place is promised.
+---
 
-## Run locally
+## What you can do
 
-```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\python.exe -m pip install -r requirements.txt
-$env:PYTHONIOENCODING = "utf-8"
-.venv\Scripts\jac.exe start main.jac --port 8000
+- **Explore pathways.** Enter your A/L stream, results and budget, then get up to three routes that the server has checked against your profile. Each route shows its conditions, sources and cash-flow picture.
+- **Compare routes side by side**, including cost, duration, entry status and what still needs confirming.
+- **See how the plan was made.** The planning activity shows each step the agent took and why: inspecting routes, stress-testing a budget, exploring a "what-if" or asking you the one question that matters most.
+- **Answer the planner's questions.** It asks about the missing detail that would change the most routes, then continues the same plan without asking you twice.
+- **Stress-test your budget** with a scenario of +40% travel cost and a six-month delay.
+- **Consider retaking your A/Ls.** Compare the preparation time and cost, and the income you'd give up, with the routes available to you now.
+- **Chat with the UniPath AI agent.** Ask about courses, entry rules, costs or retakes. The agent reads each programme's evidence, tells you what to check first and can open the right tool for you.
+
+## How it stays honest
+
+- **Server-owned facts.** Fees, requirements, sources and programme IDs come only from the researched catalogue. Gemini can choose actions and allowlisted codes, but it can't invent facts, costs or admission outcomes.
+- **Unknown is never zero.** Missing fees or requirements stay visibly "Not confirmed" and are never treated as free or as passed.
+- **What-ifs are labelled.** A route that would open only under a different assumption, such as moving to the campus, is shown separately and never changes your real results.
+- **Privacy by design.** Nothing is saved, and you don't need an account. Gemini never receives your savings, budget, district or grades.
+- **Rules first.** If AI is off or unavailable, the same checks run on deterministic rules, and the app says so.
+
+## Built with
+
+- **[Jac](https://docs.jaseci.org) 0.34.23:** the graph and rule engine, walkers and native client UI in one language.
+- **byLLM with Gemini:** optional, bounded AI planning and the chat agent.
+- **Graph search:** programmes are nodes and progressions are edges with their own prerequisites. Each branch keeps its own state, and search has cycle guards and explicit limits.
+- Hosted on **JacHammer**.
+
+## Run it yourself
+
+The project targets Jac 0.34.23, which is available as a prebuilt release in JacHammer.
+
+1. Import this repository into [JacHammer](https://jachammer.ai) and choose **Jac 0.34.23** under **Settings > Jac version**.
+2. Optional: to enable live AI, add `GOOGLE_API_KEY` under **Settings > Environment variables**.
+3. Start the preview.
+
+To run locally with the Jac 0.34.23 CLI:
+
+```bash
+jac start main.jac --port 8000
 ```
 
-Open [UniPath LK locally](http://127.0.0.1:8000). The supplied `run_project.ps1` / `run_project.bat` launchers use the project environment. `index.html` is only a legacy startup note.
+Keep API keys in server environment variables only, never in code or commits.
 
-Configure `GOOGLE_API_KEY` or `GEMINI_API_KEY` only in the server environment or ignored local `.env`; optional `UNIPATH_MODEL` defaults to `gemini/gemini-3.5-flash-lite`. Without successful AI, deterministic planning and curated guidance remain available with honest fallback labels. Keys never belong in frontend settings, screenshots or commits.
+## Testing
 
-## Verify
-
-```powershell
-.venv\Scripts\jac.exe test -d tests -v
-# With the local server running:
-.venv\Scripts\jac.exe run tests/http_regression.jac
-.venv\Scripts\jac.exe run scripts/audit_source.jac
+```bash
+jac test tests/engine_tests.jac
+jac run tests/http_regression.jac   # with the server running
 ```
 
-Latest local checks: **18 authored Jac modules checked; 54 native tests passed; 11 HTTP groups passed**. Overlapping root/council cases were consolidated after the earlier 71-case pass; assertions covering distinct boundaries remain. One real guide request returned `live_ai`, three programme IDs and three official sources in **2.05 seconds**; this is one smoke observation, not an SLA.
+The engine, planner, guide and retake logic pass 59 native tests on Jac 0.34.23. Those tests cover eligibility, cash-flow figures, cycle and search limits, AI-proposal rejection, privacy and the signed plan state.
 
-The owner confirmed both new retake and guide panels open in their browser. Automated local browser control remained disabled by Work settings, so new mobile, focus, comparison interactions and clock ticking are **not independently browser-verified**. Earlier screenshots and the prepared video show the prior release. See [verification](docs/test-matrix.md), [current UI checklist](docs/student-ui-review.md) and [research](docs/student-reality-research.md).
+**Known limits:**
+- Some request-hardening checks from the earlier release are not ported to 0.34 yet.
+- Programme coverage is deliberately small.
 
-## Evidence and limits
+See [tasks.md](tasks.md) for details.
 
-Real complete fees stay unknown. Fictional fixtures remain separate: direct **LKR 84,000 / initial gap 22,000** versus the three-stage **54,000 / zero gap**. Retake preparation example: six months, monthly spending 7,000, one-off 4,000, savings 2,000 and contribution 5,000 gives spending 46,000 and extra initial savings 14,000. Income forgone 1,000/month is a separate 6,000 opportunity cost; it is not subtracted from the contribution again.
+## Project documents
 
-Jac 87.371% of nonwhitespace UTF-8 bytes; 71.707% of nonblank lines, including CSS and support scripts. The organiser's denominator remains unconfirmed; no unconditional 80% compliance claim is made. No Linguist overrides or generated filler are used.
+[Product requirements](prd.md) · [Architecture](architecture.md) · [Agents](agents.md) · [Decisions](decisions.md) · [Catalogue evidence](docs/catalogue-evidence.md) · [Test matrix](docs/test-matrix.md)
 
-Shared AI limits are two concurrent calls and 30 calls/minute per process; this is not distributed or per-client abuse control. The SDK transport timeout is 8 seconds with zero retries, within bounded outer waits. Request bodies are capped at 32 KiB, unused account/function surfaces are denied, static traversal is rejected and API errors are redacted. This is not a comprehensive security or production certification.
+---
 
-No accounts, saved plans, payments, loan approvals, live scraping, guaranteed transfers or job guarantees. Hosting through JacHammer is **deferred until local review**. Owner's deadline is **17:00 on 17 October 2026, Asia/Colombo**; aim to freeze fixes and rehearse before then.
-
-## Project records and presentation
-
-[PRD](prd.md) · [Architecture](architecture.md) · [Tasks](tasks.md) · [Decisions](decisions.md) · [Memory](memory.md) · [Catalogue evidence](docs/catalogue-evidence.md)
-
-[Existing pitch PDF](docs/pitch-deck.pdf) · [PowerPoint](docs/pitch-deck.pptx) · [150-second silent walkthrough](docs/demo-walkthrough.mp4). These presentation binaries predate the new dashboard/retake increment and need an updated live demonstration or explicit prior-release label. Publication is not event submission.
-
-Current source `92b9d31` also passed [clean Linux CI](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39018179217): dependency installation, authored Jac checks, native regressions and explicit HTTP checks.
-
-
-Public-image repair: all five owner-provided artworks are included in the header, theme-aware welcome state, retake aid and study guide. The pinned runtime's missing binary-static hook is handled by a fixed-name project adapter. Latest local image increment passes five affected module checks, 54 native tests and **11 HTTP groups**, including exact PNG delivery/MIME. New visual layout review remains unverified because browser control is blocked.
-
-The image-fix source `2248e2a` passed [Linux CI](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39019439501), including the five-image HTTP delivery regression.
+*Always confirm current entry rules, fees, intakes and recognition with the institution before you commit. UniPath LK helps you ask the right questions; it does not decide for you.*
