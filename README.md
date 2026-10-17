@@ -166,7 +166,9 @@ The native tests check fixed cash-flow figures, prerequisite and cycle handling,
 * **Team UniPath LK**, built for the **AI Hackathon 2026 Sri Lanka** (University of Moratuwa & Jaseci Labs).
 
 Baasim MKM
+
 Maduka Malruk
+
 Rusira Vindiya
 
 * **Repository:** [github.com/baasimMKM/uniguide_V4](https://github.com/baasimMKM/uniguide_V4)
