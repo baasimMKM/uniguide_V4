@@ -1,0 +1,4 @@
+.venv/
+.jac/
+node_modules/
+reference_materials/

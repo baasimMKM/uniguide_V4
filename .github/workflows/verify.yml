@@ -1,0 +1,38 @@
+name: Verify Jac application
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONIOENCODING: utf-8
+      GOOGLE_API_KEY: ''
+      GEMINI_API_KEY: ''
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - name: Check all authored Jac modules
+        run: |
+          for source in main.jac services/*.jac components/*.jac scripts/*.jac tests/*.jac; do
+            jac check "$source" --nowarn
+          done
+      - name: Native behavioural regressions
+        run: jac test -d tests -v
+      - name: HTTP regressions against a clean local server
+        shell: bash
+        run: |
+          jac start main.jac --no_client --port 8000 > /tmp/unipath-server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent -X POST -H 'Content-Type: application/json' -d '{}' http://127.0.0.1:8000/walker/health > /tmp/unipath-health.json; then
+              break
+            fi
+            sleep 1
+          done
+          jac run tests/http_regression.jac
