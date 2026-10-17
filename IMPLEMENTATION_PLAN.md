@@ -20,7 +20,7 @@ This document describes the current prototype on 17 October 2026. It replaces th
 
 ## Verification already recorded
 
-Native Jac and Jac HTTP regression suites have passed locally. Current confirmed counts and any SDK-adapter follow-up checks belong in the test matrix. The checker passed the two test files with zero errors; warnings remain. The matrix records the actual assertions and caveats. These checks do not prove admissions, complete catalogue coverage, professional recognition or production readiness.
+The preserved-cache-quarantine baseline passed **35 native Jac tests and seven authoritative HTTP checks**. The subsequent planner type-narrowing fix passed the clean checker and all **35 native tests**. All seven authoritative HTTP checks also passed on the latest typing-fix revision (exit 0, `ci-final-http-authoritative.log`). The clean 12-file checker and exact CI-discovery run of 35 native tests passed locally; hosted CI is awaiting confirmation. Use `docs/test-matrix.md` for the latest confirmed result. The checker passed the two test files with zero errors; warnings remain. The matrix records the actual assertions and caveats. These checks do not prove admissions, complete catalogue coverage, professional recognition or production readiness.
 
 ```powershell
 .venv\Scripts\jac.exe check tests/engine_tests.jac tests/http_regression.jac
@@ -49,9 +49,15 @@ Deterministic ordering keeps route status first, then related subject terms, the
 ## Work still required
 
 1. Preserve the completed core browser QA evidence. Recheck affected journeys if the final source revision changes; do not generalise the scoped checks to all browsers/devices.
-2. Run a reproducible Jac source audit with a stated denominator and exclusions. The ≥80% requirement is a target pending audit; do not claim 95% or compliance before counting.
-3. Prepare deployment using the pinned runtime and external server-side configuration. Verify startup, all six operations, the client and fallback behavior at the deployed URL. A local server is not a deployed submission.
-4. Review the prepared silent 2:30 captured-view walkthrough and six-slide PDF/PPTX deck. The video is assembled from actual captures rather than continuous recording; upload/link verification and submission are still required. Clearly identify the fictional financial segment and the incomplete real fees. Rehearse from `DEMO_VIDEO_SCRIPT.md`.
-5. Add actual repository/deployment/video/deck links, verify their access, review event submission requirements and submit through the required workflow. Do not mark stars, deployment, recordings or uploads complete without evidence.
+2. Preserve the final local evidence: clean 12-file checking, exact CI-discovery 35 native tests and seven authoritative HTTP checks passed after the planner typing fix. Await confirmation of the hosted CI run. Preserve the measured source snapshot below and reconcile the organiser’s counting method; rerun the audit after final code changes. Do not turn a measured percentage into an unqualified eligibility claim.
+3. Support the user’s local application review. Hosting is deferred by the user until that review. Keep future deployment work dormant until requested; then verify the pinned runtime, six operations, client and fallback at the real hosted URL.
+4. Review the prepared silent 2:30 captured-view walkthrough and six-slide PDF/PPTX deck. The video is assembled from actual captures rather than continuous recording; the files are now published on GitHub, while the event’s video-hosting requirements and final submission still need confirmation. Clearly identify the fictional financial segment and the incomplete real fees. Rehearse from `DEMO_VIDEO_SCRIPT.md`.
+5. Preserve the public repository and artifact links below. Hosting is deferred until the user’s local review. Verify event-specific video/link requirements, then submit through the required workflow. The repository star requirement and event submission need separate evidence.
 
 `tasks.md` owns the live checklist and final verification. Preserve the current catalogue unless a separately sourced correction is authorised. No synthetic accreditation, automatic loan award, job guarantee or inferred transfer is required for the current product.
+
+## Publication and source measurement snapshot — 17 October 2026
+
+The [public repository](https://github.com/madukamalruk/unipathlk-v2) was published with initial commit [`d2f41e8`](https://github.com/madukamalruk/unipathlk-v2/commit/d2f41e823edb7f940b32d0d3de24ab5d6290fb46). This is the initial publication snapshot; a subsequent planner control-flow fix passed clean checking and 35 native tests, and all seven authoritative HTTP checks on the latest typing-fix revision. Hosting is deferred by the user until local review; final event submission remains pending.
+
+The recorded source snapshot reports Jac **86.191% of nonwhitespace UTF-8 bytes** and **72.892% of nonblank lines** under `scripts/audit_source.jac`. The observed GitHub Languages display reports **Jac 88.3%, CSS 11.0%, Other 0.7%**. These use different denominators. The organiser’s counting method is unconfirmed, so these measurements do not establish unconditional compliance with the ≥80% requirement. Rerun the source audit after code changes.

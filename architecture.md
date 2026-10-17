@@ -67,7 +67,7 @@ $env:PYTHONIOENCODING = "utf-8"
 .venv\Scripts\jac.exe start main.jac --port 8000
 ```
 
-The launcher sets the encoding already. Core browser QA is complete for the tested local journeys; deployment remains pending; check the final test matrix for the latest confirmed regression count.
+The launcher sets the encoding already. Core browser QA is complete for the tested local journeys; hosting is deferred by the user until local review; check the final test matrix for the latest confirmed regression count.
 
 
 ## Increment: bounded nonstreaming provider transport and completed core browser QA
@@ -79,3 +79,11 @@ The worker preserves the caller’s Jac/byLLM context and releases its slot afte
 Core browser QA is complete for the tested local journeys: business/accounting discovery, mobile hospitality layout, dark theme and keyboard interaction, evidence links, the O/L English follow-up and F-grade re-evaluation, unknown-cost stress, fictional financial oracles, and network-error/retry handling. This is a scoped local check, not a claim of every browser, device or accessibility condition.
 
 The current local browser journey also showed genuine AI-assisted planning through search, evaluation and a relevant O/L English question, with no fallback label on that captured request. An earlier genuine Gemini smoke request took 4.89 seconds; that separate observation is not a response-time or quality guarantee.
+
+## Publication and source measurement snapshot — 17 October 2026
+
+The [public repository](https://github.com/madukamalruk/unipathlk-v2) was published with initial commit [`d2f41e8`](https://github.com/madukamalruk/unipathlk-v2/commit/d2f41e823edb7f940b32d0d3de24ab5d6290fb46). This is the initial publication snapshot; a subsequent planner control-flow fix passed clean checking and 35 native tests, and all seven authoritative HTTP checks on the latest typing-fix revision. Hosting is deferred by the user until local review; final event submission remains pending.
+
+The recorded source snapshot reports Jac **86.191% of nonwhitespace UTF-8 bytes** and **72.892% of nonblank lines** under `scripts/audit_source.jac`. The observed GitHub Languages display reports **Jac 88.3%, CSS 11.0%, Other 0.7%**. These use different denominators. The organiser’s counting method is unconfirmed, so these measurements do not establish unconditional compliance with the ≥80% requirement. Rerun the source audit after code changes.
+
+The preserved-cache-quarantine baseline passed **35 native Jac tests and seven authoritative HTTP checks**. The subsequent planner type-narrowing fix passed the clean checker and all **35 native tests**. All seven authoritative HTTP checks also passed on the latest typing-fix revision (exit 0, `ci-final-http-authoritative.log`). The clean 12-file checker and exact CI-discovery run of 35 native tests passed locally; hosted CI is awaiting confirmation. Use `docs/test-matrix.md` for the latest confirmed result.

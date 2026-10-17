@@ -2,7 +2,7 @@
 
 The prepared docs/demo-walkthrough.mp4 is a captioned walkthrough assembled from nine real local-app captures. It has no audio and is not a continuous screen recording. This script describes its actual scenes; it can also guide an optional separate spoken presentation. Never claim that captions show unrecorded clicks or live interactions between captures.
 
-Core browser QA is complete for the tested business, mobile hospitality, dark-theme/keyboard, evidence, follow-up English F-grade update, unknown-cost stress, fixture and network-error/retry journeys. Deployment, final Jac audit/method reconciliation, upload and submission links remain pending. Rehearse the submitted revision and preserve fixture/source disclosures.
+Core browser QA is complete for the tested business, mobile hospitality, dark-theme/keyboard, evidence, follow-up English F-grade update, unknown-cost stress, fixture and network-error/retry journeys. The repository and presentation files are published on GitHub. The planner fix passed clean checking and 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted CI is awaiting confirmation. Hosting is deferred by the user until local review; event-specific video requirements and final submission remain pending. Rehearse the submitted revision and preserve fixture/source disclosures.
 
 ## Startup for a separate live demonstration
 
@@ -29,4 +29,6 @@ The replacement AI capture is evidence of that observed request. An earlier genu
 
 The provider adapter is native Jac using byLLM 0.6.19’s public parameter extension: SDK timeout eight seconds and zero SDK retries; outer future min(10 seconds, remaining 15-second planning deadline); zero stream/output retries. These implementation details support the technical pitch rather than the student-facing flow.
 
-The generation helper is local-setup/build_demo_walkthrough.py outside the product. Its current build uses --activity-mode live only because capture 03 was replaced with the verified AI-assisted view. After changing captures, rerun and inspect the actual encoded frames. Upload and link-access checks are separate actions; the artifact is not automatically a submitted video.
+The generation helper is local-setup/build_demo_walkthrough.py outside the product. Its current build uses --activity-mode live only because capture 03 was replaced with the verified AI-assisted view. After changing captures, rerun and inspect the actual encoded frames. The MP4 is published on GitHub. Event-specific hosting and final submission are separate actions; publication is not event submission.
+
+Publication: [repository](https://github.com/madukamalruk/unipathlk-v2), [captioned walkthrough](https://github.com/madukamalruk/unipathlk-v2/blob/main/docs/demo-walkthrough.mp4), [pitch PDF](https://github.com/madukamalruk/unipathlk-v2/blob/main/docs/pitch-deck.pdf). Initial published commit: `d2f41e823edb7f940b32d0d3de24ab5d6290fb46`. Final event submission remains pending. Hosting is deferred by the user until local review.

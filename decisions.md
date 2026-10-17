@@ -29,7 +29,7 @@ Revisit a decision when a verified requirement or runtime constraint changes. Pr
 | ADR-15 | Redact framework error envelopes before normal JSON serialization | Replace error text and remove exposed tracebacks at top-level/nested error boundaries. Return through the normal serializer once; successful reports stay unchanged. This does not claim comprehensive logging redaction. |
 | ADR-16 | Set UTF-8 for raw Windows launch commands | The framework can print Unicode. Set PYTHONIOENCODING=utf-8 before starting Jac; the supplied launcher already does so. |
 
-Confirmed test counts and the latest SDK-adapter follow-up checks belong in docs/test-matrix.md. Core browser QA is complete for the tested local journeys; deployment remains pending.
+Confirmed test counts and the latest SDK-adapter follow-up checks belong in docs/test-matrix.md. Core browser QA is complete for the tested local journeys; hosting is deferred by the user until local review.
 
 
 ## Provider adapter and browser acceptance increment
@@ -42,4 +42,12 @@ Confirmed test counts and the latest SDK-adapter follow-up checks belong in docs
 
 Core browser QA is complete for the tested local journeys: business/accounting discovery, mobile hospitality layout, dark theme and keyboard interaction, evidence links, the O/L English follow-up and F-grade re-evaluation, unknown-cost stress, fictional financial oracles, and network-error/retry handling. This is a scoped local check, not a claim of every browser, device or accessibility condition.
 
-Deployment and final Jac audit/method reconciliation remain pending.
+Hosting is deferred by the user until local review; final event submission remains pending. Source composition has been measured; the organiser’s counting method remains unconfirmed. The planner control-flow fix passed clean checking and 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted CI is awaiting confirmation.
+
+## Publication and source measurement snapshot — 17 October 2026
+
+The [public repository](https://github.com/madukamalruk/unipathlk-v2) was published with initial commit [`d2f41e8`](https://github.com/madukamalruk/unipathlk-v2/commit/d2f41e823edb7f940b32d0d3de24ab5d6290fb46). This is the initial publication snapshot; a subsequent planner control-flow fix passed clean checking and 35 native tests, and all seven authoritative HTTP checks on the latest typing-fix revision. Hosting is deferred by the user until local review; final event submission remains pending.
+
+The recorded source snapshot reports Jac **86.191% of nonwhitespace UTF-8 bytes** and **72.892% of nonblank lines** under `scripts/audit_source.jac`. The observed GitHub Languages display reports **Jac 88.3%, CSS 11.0%, Other 0.7%**. These use different denominators. The organiser’s counting method is unconfirmed, so these measurements do not establish unconditional compliance with the ≥80% requirement. Rerun the source audit after code changes.
+
+The preserved-cache-quarantine baseline passed **35 native Jac tests and seven authoritative HTTP checks**. The subsequent planner type-narrowing fix passed the clean checker and all **35 native tests**. All seven authoritative HTTP checks also passed on the latest typing-fix revision (exit 0, `ci-final-http-authoritative.log`). The clean 12-file checker and exact CI-discovery run of 35 native tests passed locally; hosted CI is awaiting confirmation. Use `docs/test-matrix.md` for the latest confirmed result.

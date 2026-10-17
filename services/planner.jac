@@ -117,10 +117,8 @@ def _planning_session(profile: dict, scripted: list[dict] | None = None) -> dict
         }
         if decision is not None and not isinstance(decision, PlannerDecision) {
             fallback_reason = "The model returned an invalid decision structure. Rule-based evaluation continued.";
-            decision = None;
             used_fallback = True;
-        }
-        if decision is not None {
+        } elif decision is not None {
             ids = [str(route["route_id"]) for route in candidates];
             valid = type(decision.action) == str and decision.action in allowed and type(decision.explanation) == str and len(decision.explanation) <= 600;
             if type(decision.route_ids) != list or not all([type(rid) == str for rid in decision.route_ids]) {

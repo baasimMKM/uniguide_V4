@@ -7,14 +7,14 @@ enable AI only after asserting that the provider helper is a bound mock.
 Automated cases make no model inference requests, print no credentials, write no
 student file and attach no fixture nodes to `root`. Earlier HTTP checks used a clean source copy without `.env`; final checks target the authoritative server on port 8000. Ordinary application imports can load local settings.
 
-Native suite: **35 passed** (0.792 seconds), including SDK forwarding and truthful fallback labels. Native Jac HTTP suite: **7 groups passed**
+Native suite: **35 passed** (0.246 seconds using the exact CI discovery command), including SDK forwarding and truthful fallback labels. Native Jac HTTP suite: **7 groups passed**
 against the final authoritative server on port 8000, including unique qualification-selector IDs and canonical-response
 traceback suppression. An intentionally unreachable local URL returned exit 1;
-the successful HTTP suite returned exit 0. The Jac checker passed both test files with
+the successful HTTP suite returned exit 0. A clean-cache Jac checker passed all 12 authored Jac files (48.98 seconds) with
 zero errors; loose JSON dictionary and inferred-value warnings remain. These are
 behavioral regression results, not a statement of complete test coverage.
 
-The final seven-group run returned exit 0 after preserving/quarantining the stale Jac IR cache and restarting from current source. Earlier runs also passed on the SDK server (port 8004) and the key-free clean-source server (port 8002).
+The final planner revision passes the clean checker, all 35 native cases and the post-sync seven-group HTTP run on port 8000 (exit 0). The exact CI command discovers no automatic HTTP tests; the helper runs only through its named main entry. Preserving/quarantining the stale Jac IR cache resolved earlier outdated API responses. Earlier runs also passed on the SDK server (port 8004) and the key-free clean-source server (port 8002).
 
 | Tests | Scenario and observed assertion | Result |
 | --- | --- | --- |
@@ -55,7 +55,7 @@ From the project directory with its existing isolated environment:
 
 ```powershell
 .venv/Scripts/jac.exe check tests/engine_tests.jac tests/http_regression.jac
-.venv/Scripts/jac.exe test tests/engine_tests.jac -v
+.venv/Scripts/jac.exe test -d tests -v
 # Start the application using its documented server command in another terminal.
 .venv/Scripts/jac.exe run tests/http_regression.jac
 ```
@@ -77,3 +77,9 @@ returns HTTP 401. The helper prints test names/results rather than student bodie
 - UI interaction, browser accessibility, responsive layout and visual review are not covered by these files.
 - Source URLs and catalogue structure are checked, but tests do not prove institutional admission, current fee completeness, professional recognition or transfer acceptance.
 - Root and input/catalogue immutability assertions establish the tested in-memory behavior, not a forensic disk/database audit.
+
+Initial commit `d2f41e8` was published to the public GitHub repository. Its first
+hosted CI run exposed the narrowed-None planner type error. The correction
+passes the clean local checker and exact CI discovery command; the next hosted
+CI result remains pending. Jac Hammer deployment is deferred until after local
+review, as requested by the user.

@@ -21,9 +21,17 @@ Keep fictional demo records separate and visibly labelled. Their financial oracl
 
 The model may choose bounded actions and supplied route IDs. It must not invent programmes, fees, admissions, accreditation, credits or employment. Eligibility and finance remain server-owned. Preserve the honest live_ai/mixed/rules_fallback labels.
 
-One earlier real Gemini request took 4.89 seconds, a smoke observation only. The current browser capture verifies AI-assisted search/evaluate/question behavior. Core browser QA is complete for the tested journeys. The captioned captured-view video and PDF/PPTX deck are prepared; deployment, final Jac audit/method reconciliation, uploads and submission links remain pending. Work from tasks.md and verify a step before marking it complete.
+One earlier real Gemini request took 4.89 seconds, a smoke observation only. The current browser capture verifies AI-assisted search/evaluate/question behavior. Core browser QA is complete for the tested journeys. The captioned captured-view video and PDF/PPTX deck are prepared; the repository and files are published on GitHub. The planner fix passed clean checking and 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted CI is awaiting confirmation. Hosting is deferred by the user until local review and final event submission remains pending. Source composition is measured below; the organiser’s counting method remains unconfirmed. Work from tasks.md and verify a step before marking it complete.
 
 The native Jac provider subclass uses byLLM 0.6.19’s public make_model_params extension for an eight-second SDK timeout and zero SDK retries; outer future waits are min(10 seconds, remaining 15-second deadline), with zero stream/output retries. Preserve it without editing installed packages.
 
 Keep secrets server-side and out of source, browser, logs and recordings. Do not read or print credential values. Do not replace the working app with the superseded nine-walker/synthetic-bridge concept. Explain remaining limitations plainly.
 ```
+
+## Publication and source measurement snapshot — 17 October 2026
+
+The [public repository](https://github.com/madukamalruk/unipathlk-v2) was published with initial commit [`d2f41e8`](https://github.com/madukamalruk/unipathlk-v2/commit/d2f41e823edb7f940b32d0d3de24ab5d6290fb46). This is the initial publication snapshot; a subsequent planner control-flow fix passed clean checking and 35 native tests, and all seven authoritative HTTP checks on the latest typing-fix revision. Hosting is deferred by the user until local review; final event submission remains pending.
+
+The recorded source snapshot reports Jac **86.191% of nonwhitespace UTF-8 bytes** and **72.892% of nonblank lines** under `scripts/audit_source.jac`. The observed GitHub Languages display reports **Jac 88.3%, CSS 11.0%, Other 0.7%**. These use different denominators. The organiser’s counting method is unconfirmed, so these measurements do not establish unconditional compliance with the ≥80% requirement. Rerun the source audit after code changes.
+
+The preserved-cache-quarantine baseline passed **35 native Jac tests and seven authoritative HTTP checks**. The subsequent planner type-narrowing fix passed the clean checker and all **35 native tests**. All seven authoritative HTTP checks also passed on the latest typing-fix revision (exit 0, `ci-final-http-authoritative.log`). The clean 12-file checker and exact CI-discovery run of 35 native tests passed locally; hosted CI is awaiting confirmation. Use `docs/test-matrix.md` for the latest confirmed result.

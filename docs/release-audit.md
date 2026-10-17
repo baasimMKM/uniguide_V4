@@ -3,7 +3,7 @@
 Audited on 17 October 2026 after the root engineer declared the source freeze.
 Runtime: project-local Python 3.12, Jac 0.16.7 and byLLM 0.6.19. Application source
 fixes belong to the root/UI engineers; the test engineer owns the regression
-files and this audit. The final staged and authoritative Downloads handwritten-source fingerprints match. Source composition and final credential scans below describe that authoritative source/build snapshot.
+files and this audit. The final staged and authoritative Downloads handwritten-source fingerprints match after the clean-checker repair. Composition and credential scans describe that authoritative source/build snapshot; its post-sync seven-group HTTP suite passes.
 
 ## Language proportion
 
@@ -17,16 +17,16 @@ classification, padding or formatting change was used to obtain these results.
 
 | Measure | Jac | All handwritten source | Jac share |
 | --- | ---: | ---: | ---: |
-| Nonblank lines | 2,855 | 3,916 | 72.906% |
-| UTF-8 bytes after removing Unicode whitespace | 98,928 | 114,776 | 86.192% |
+| Nonblank lines | 2,853 | 3,914 | 72.892% |
+| UTF-8 bytes after removing Unicode whitespace | 98,916 | 114,764 | 86.191% |
 
 The byte measure exceeds 80%; the line measure does not. Publish both values and
 the counting scope. This is a composition measurement, not a guarantee of the
 competition's interpretation of its language requirement.
 
 Source snapshot SHA-256, over sorted relative paths and their source bytes:
-`4c596edde38467b16f6e957b7ec4ef9aa2ca8183cc2b5a7c0fba5f98c9f140c8`.
-The native audit reported complete reads and zero read errors.
+`052aca08faf4cc06c2c1b1c56beb620c0676eb70d34c4fd849938142ede31462`.
+The native Jac audit and independent counter agree on this revision; both completed all reads without errors.
 
 ## Credential scan
 
@@ -67,10 +67,9 @@ responsible engineer changed it to the supported native syntax.
 
 Earlier backend checks used refreshed services in the key-free smoke copy, started with `--no_client`. Final HTTP checks target the authoritative Downloads server on port 8000 with every planning request disabling AI. This audit did not rebuild that server's client.
 
-- All 35 final staged native tests passed (0.792 seconds), including safe provider failure,
-  malformed-object, rejected-proposal labels and real thread/context propagation regressions. The real SDK parameter builder now proves an eight-second timeout and zero retries reach the request while retaining its typed payload.
-- Main and regression checks passed earlier; both final regression files passed
-  with zero errors. JSON-boundary/deprecation warnings remain.
+- The exact CI discovery command `jac test -d tests -v` passed all 35 native tests (0.246 seconds), including safe provider failure,
+  malformed-object, rejected-proposal labels and real thread/context propagation regressions. The real SDK parameter builder now proves an eight-second timeout and zero retries reach the request while retaining its typed payload. Discovery found zero automatic tests in the named-main HTTP helper.
+- A preserved/quarantined staged IR cache forced a clean check of all 12 authored Jac files; all passed in 48.98 seconds with zero errors. JSON-boundary/deprecation warnings remain.
 - All seven native Jac HTTP groups passed on the final authoritative server on port 8000, including unique qualification-selector IDs and canonical errors without
   tracebacks, all twelve fields, goal/preference ordering, invalid profiles,
   cash/stress oracles and rejection of client-computed results.
@@ -106,7 +105,7 @@ profiles accepted as defaults, duplicate/blank subjects counting as passes,
 contradictory maths credit, mutation during subject normalization, unchecked
 model prose/ordering, malformed model structures, incorrect fallback labels, dropped SDK timeout/retry options, lost worker context and public
 framework tracebacks. The regressions exercise those concrete cases. No audited
-native or final HTTP assertion remains failed.
+native or final HTTP assertion remains failed on the latest planner revision.
 
 
 
@@ -120,3 +119,14 @@ including the new unique-selector-ID assertion. A server-ready log alone was
 insufficient; actual listener and response checks established readiness. The
 owned clean smoke server on port 8002 was stopped after checking its recorded
 PID/command/port; the authoritative and SDK servers were left to their owner.
+The first clean CI run exposed a planner type-checking error hidden by prior
+cache reuse: assigning None inside a narrowed PlannerDecision branch was
+rejected. The responsible engineer removed that assignment and used an elif
+validation branch, preserving fallback behavior. A clean-cache check of all
+12 authored Jac files and the unchanged 35 native cases pass on this revision.
+Initial public GitHub commit `d2f41e8` triggered a first hosted CI run that
+exposed the planner type-checking issue above. Its correction now passes a
+clean local checker, the exact CI discovery command and the authoritative HTTP
+suite. The next hosted CI result remains pending; local success is not labelled
+as a hosted CI pass. Jac Hammer deployment is deferred until after local review
+at the user's request.

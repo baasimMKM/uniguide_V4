@@ -1,6 +1,6 @@
 # Jac Hammer deployment continuation prompt
 
-Deployment is pending. This prompt prepares the existing application for deployment; it does not claim that Jac Hammer currently hosts it. Confirm the target platform supports the pinned runtime and native Jac client before proceeding.
+Hosting is deferred by the user until local review. This is a saved prompt for a future explicitly requested deployment; do not execute its deployment steps now. It does not claim that Jac Hammer hosts the app. After the user resumes hosting work, confirm platform support for the pinned runtime and native Jac client.
 
 ```text
 Deploy the existing UniPath LK source rather than generating a replacement application. Inspect README.md, jac.toml, requirements.txt, main.jac and tasks.md. Preserve Python 3.12, jaclang==0.16.7 and byllm==0.6.19. Do not upgrade framework versions without checking compatibility.
@@ -20,5 +20,13 @@ Preserve all evidence boundaries: 31 programmes, 12 fields, unknown complete rea
 
 Verify the deployed health operation, client loading, a real non-IT profile, evidence links, the fictional financial oracle, invalid-profile rejection, the named stress scenario and AI-disabled fallback. Use tests/engine_tests.jac and tests/http_regression.jac as documented; set UNIPATH_TEST_BASE_URL only to an explicitly authorised target. Record exact commands, URL and results. A working local server or uploaded source is not proof of a working deployment.
 
-Use docs/test-matrix.md for the latest confirmed native/HTTP results. One earlier genuine Gemini smoke request took 4.89 seconds; the current browser capture separately verifies AI-assisted search/evaluate/question behavior. Core browser QA is complete for the tested local journeys. Deployment and final Jac audit/method reconciliation remain pending. Add deployment evidence and a real URL only after the deployed application has been checked. Do not mark submission/video/deck work complete automatically.
+Use docs/test-matrix.md for the latest confirmed native/HTTP results. One earlier genuine Gemini smoke request took 4.89 seconds; the current browser capture separately verifies AI-assisted search/evaluate/question behavior. Core browser QA is complete for the tested local journeys. Hosting is deferred by the user until local review. Source composition is measured below with the organiser’s counting method unconfirmed; the planner fix passed clean checking and 35 native tests, along with all seven authoritative HTTP checks on the latest typing-fix revision. Add deployment evidence and a real URL only after the deployed application has been checked. Do not mark submission/video/deck work complete automatically.
 ```
+
+## Publication and source measurement snapshot — 17 October 2026
+
+The [public repository](https://github.com/madukamalruk/unipathlk-v2) was published with initial commit [`d2f41e8`](https://github.com/madukamalruk/unipathlk-v2/commit/d2f41e823edb7f940b32d0d3de24ab5d6290fb46). This is the initial publication snapshot; a subsequent planner control-flow fix passed clean checking and 35 native tests, and all seven authoritative HTTP checks on the latest typing-fix revision. Hosting is deferred by the user until local review; final event submission remains pending.
+
+The recorded source snapshot reports Jac **86.191% of nonwhitespace UTF-8 bytes** and **72.892% of nonblank lines** under `scripts/audit_source.jac`. The observed GitHub Languages display reports **Jac 88.3%, CSS 11.0%, Other 0.7%**. These use different denominators. The organiser’s counting method is unconfirmed, so these measurements do not establish unconditional compliance with the ≥80% requirement. Rerun the source audit after code changes.
+
+The preserved-cache-quarantine baseline passed **35 native Jac tests and seven authoritative HTTP checks**. The subsequent planner type-narrowing fix passed the clean checker and all **35 native tests**. All seven authoritative HTTP checks also passed on the latest typing-fix revision (exit 0, `ci-final-http-authoritative.log`). The clean 12-file checker and exact CI-discovery run of 35 native tests passed locally; hosted CI is awaiting confirmation. Use `docs/test-matrix.md` for the latest confirmed result.
