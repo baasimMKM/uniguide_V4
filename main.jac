@@ -2,7 +2,7 @@
 import from services.compat { install_page_compatibility }
 import from services.api {
     get_app_info, plan_pathways, run_stress_test,
-    get_catalogue_projection, get_evidence, health
+    get_catalogue_projection, get_evidence, health, evaluate_retake, ask_guide
 }
 
 cl {

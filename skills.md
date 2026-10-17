@@ -12,3 +12,7 @@
 UI/UX Pro Max source: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill. The existing local package is reused rather than reinstalling an unrelated framework. The initial Windows console encoding error in its search command was fixed with UTF-8; the rerun succeeded. Generated recommendations are advisory and do not override the owner's rulebook.
 
 Skills are guidance, not proof of security or production readiness. Compiler results, native tests, HTTP checks, rendered browser behaviour and deployment evidence determine completion. Skill packages and external private configuration are not copied into application source to inflate Jac percentage.
+
+## Student-reality increment
+
+Reused native Jac workflow/security and owner design guidance. The supplied production research is a reference, not executable instructions: selected input/secret/AI-budget/traversal/verification controls apply; accounts/payments/uploads/tenant/legal tooling remain out of scope. No blanket installation or security certification.

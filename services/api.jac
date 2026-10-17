@@ -1,6 +1,8 @@
 """The six public, anonymous operations. Inputs are recomputed server-side."""
 import from .engine { _load_catalogue, _validate_profile, _stress, _base_dir }
 import from .planner { _planning_session }
+import from .retake { _evaluate_retake }
+import from .assistant { _guide_answer }
 
 walker:pub get_app_info {
     can info with Root entry {
@@ -74,5 +76,21 @@ walker:pub health {
             report {"ok": True, "version": "0.2.0", "real_programmes": len(real.data["offerings"] as list),
                 "demo_programmes": len(demo.data["offerings"] as list)};
         } except Exception { report {"ok": False, "message": "Catalogue readiness failed. Check the server configuration."}; }
+    }
+}
+
+walker:pub evaluate_retake {
+    has profile: dict = {}, retake: dict = {};
+    can evaluate with Root entry {
+        try { report _evaluate_retake(self.profile, self.retake); }
+        except ValueError as error { report {"status": "invalid_input", "message": str(error)}; }
+    }
+}
+
+walker:pub ask_guide {
+    has profile: dict = {}, message: str = "", history: list[dict] = [], allow_ai: bool = False;
+    can answer with Root entry {
+        try { report _guide_answer(self.profile, self.message, self.history, self.allow_ai); }
+        except ValueError as error { report {"status": "invalid_input", "message": str(error)}; }
     }
 }

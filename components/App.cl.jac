@@ -1,4 +1,8 @@
 sv import from ..services.api { get_app_info, plan_pathways, run_stress_test }
+import from .LiveClock { LiveClock }
+import from .RouteComparison { RouteComparison }
+import from .GuidePanel { GuidePanel }
+import from .RetakePanel { RetakePanel }
 
 def rows(data: dict, key: str) -> list[dict] {
     return data.get(key, []) as list[dict];
@@ -16,6 +20,10 @@ def join_words(values: list[str], separator: str) -> str {
 }
 def label_for(value: any) -> str {
     return str(value).replace("_", " ");
+}
+def is_http_source(value: any) -> bool {
+    url = str(value);
+    return url[:8] == "https://" or url[:7] == "http://";
 }
 def money(value: any) -> str {
     return "Not confirmed"
@@ -103,13 +111,13 @@ def:pub Evidence(claims: list[dict]) -> JsxElement {
                         </div>
                         <p>{claim.get("note", "")}</p>
                         <div className="row spread">
-                            <a
+                            {if is_http_source(claim.get("source_url", "")) { <a
                                 href={claim["source_url"]}
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
                                 Open source ↗
-                            </a>
+                            </a> } else { <small>No external source · fictional fixture</small> }}
                             <small>
                                 {"Checked " + str(
                                     claim.get("checked_on", "Not confirmed")
@@ -257,6 +265,9 @@ def:pub App() -> JsxElement {
     has info_error: str = "";
     has stress_error: str = "";
     has dark: bool = False;
+    has profile_open: bool = True;
+    has guide_open: bool = False;
+    has guide_trigger: Ref[HTMLButtonElement] = Ref();
     has view: str = "routes";
     has revision: Ref[int] = Ref(0);
     has resultRef: Ref[HTMLDivElement] = Ref();
@@ -338,6 +349,14 @@ def:pub App() -> JsxElement {
     def routes_tab(e: MouseEvent) -> None {
         view = "routes";
     }
+    def compare_tab(e: MouseEvent) -> None { view = "compare"; }
+    def toggle_profile(e: MouseEvent) -> None { profile_open = not profile_open; }
+    def retake_tab(e: MouseEvent) -> None { view = "retake"; }
+    def toggle_guide(e: MouseEvent) -> None { guide_open = not guide_open; }
+    def close_guide() -> None {
+        guide_open = False;
+        if guide_trigger.current { guide_trigger.current.focus(); }
+    }
     def graph_tab(e: MouseEvent) -> None {
         view = "graph";
     }
@@ -372,8 +391,8 @@ def:pub App() -> JsxElement {
                 if form["has_maths_credit"] == "unknown"
                 else form["has_maths_credit"] == "yes",
             "z_score": float(str(form["z_score"])) if form["z_score"] else None,
-            "savings_lkr": int(form["savings_lkr"]),
-            "monthly_budget_lkr": int(form["monthly_budget_lkr"]),
+            "savings_lkr": int(form["savings_lkr"]) if form["savings_lkr"] != "" else None,
+            "monthly_budget_lkr": int(form["monthly_budget_lkr"]) if form["monthly_budget_lkr"] != "" else None,
             "home_district": form["home_district"],
             "can_relocate": None
                 if form["can_relocate"] == "unknown"
@@ -424,6 +443,7 @@ def:pub App() -> JsxElement {
                 submitted = profile;
                 stale = False;
                 view = "routes";
+                profile_open = False;
                 if resultRef.current {
                     resultRef.current.focus();
                 }
@@ -492,9 +512,8 @@ def:pub App() -> JsxElement {
                     <span>UniPath <span className="brand-lk">LK</span></span>
                 </a>
                 <div className="header-right">
-                    <span className="country-label">
-                        Education pathways in Sri Lanka
-                    </span>
+                    <LiveClock />
+                    <button type="button" ref={guide_trigger} className="secondary-button guide-trigger" onClick={toggle_guide} aria-haspopup="dialog" aria-controls="guide-dialog" aria-expanded={guide_open}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z" /></svg>Ask study guide</button>
                     <button
                         type="button"
                         className="quiet-button theme-button"
@@ -508,35 +527,27 @@ def:pub App() -> JsxElement {
             <main className="page-shell">
                 <section className="intro">
                     <div>
-                        <p className="eyebrow">Your next step after A/Ls</p>
-                        <h1>
-                            A route that fits
-                            <br/>
-                            your real life.
-                        </h1>
+                        <p className="eyebrow">Sri Lanka · Education pathways</p>
+                        <h1>Plan your next step.</h1>
                         <p className="intro-copy">
-                            Explore study options across Sri Lanka, with your qualifications, budget and circumstances in view.
+                            Compare study routes against your qualifications, budget and circumstances.
                         </p>
                     </div>
                     <aside className="intro-aside">
-                        <span className="fine-rule"></span>
-                        <p>
-                            Start with what you know.
-                            <br/>
-                            We will make the gaps clear.
-                        </p>
-                        <a href="#how-it-works">How your results are checked ↓</a>
+                        <a href="#how-it-works">How results are checked ↓</a>
                     </aside>
                 </section>
                 <div className="workspace">
-                    <section className="profile-panel" id="profile">
+                    <section className={"profile-panel profile-open" if profile_open else "profile-panel profile-collapsed"} id="profile">
                         <div className="section-heading">
                             <span className="section-number">01</span>
                             <div>
-                                <h2>Your starting point</h2>
-                                <p>Unknown details can be added later.</p>
+                                <h2>Your profile</h2>
+                                <p>Start with what you know.</p>
                             </div>
+                            <button type="button" className="quiet-button profile-toggle" aria-expanded={profile_open} aria-controls="profile-fields" onClick={toggle_profile}>{"Hide" if profile_open else "Edit profile"}</button>
                         </div>
+                        <div className="profile-body" id="profile-fields">
                         {if info_error {
                             <div className="error" role="alert">
                                 <p>{info_error}</p>
@@ -816,19 +827,24 @@ def:pub App() -> JsxElement {
                                 No account needed. Your profile is not saved by this planner.
                             </p>
                         </form>
+                        </div>
                     </section>
                     <section className="results-panel" aria-busy={loading}>
                         <div className="section-heading" ref={resultRef} tabIndex={-1}>
                             <span className="section-number">02</span>
                             <div>
-                                <h2>Your possible pathways</h2>
+                                <h2>{"Retake A/Ls" if view == "retake" else (str(len(rows(result, "candidates"))) + " possible pathways" if bool(result) else "Your pathways")}</h2>
                                 <p>
-                                    {"Based on your submitted profile"
+                                    {"Consider another attempt alongside the study routes available now." if view == "retake" else ("Review the conditions, compare routes and check the sources."
                                         if bool(result)
-                                        else "A clearer view of what comes next"}
+                                        else "Complete your profile to see the routes available in this catalogue.")}
                                 </p>
                             </div>
+                            <span className={"status needs_confirmation" if stale else "status"}>{"Scenario" if view == "retake" else ("Profile changed" if stale else ("Checked" if bool(result) else "Ready to plan"))}</span>
                         </div>
+                        <nav className="workspace-tabs" aria-label="Planning task"><button type="button" onClick={routes_tab} aria-pressed={view != "retake"}>Explore study routes</button><button type="button" onClick={retake_tab} aria-pressed={view == "retake"}>Consider retaking A/Ls</button></nav>
+                        <div hidden={view != "retake"}><RetakePanel profile={payload()} profileRevision={revision.current as int} /></div>
+                        <div hidden={view == "retake"}>
                         <div className="live-status" role="status" aria-live="polite">
                             {if loading {
                                 <p>
@@ -842,13 +858,7 @@ def:pub App() -> JsxElement {
                         </div>
                         {if not bool(result) {
                             <div className="empty-state">
-                                <div className="path-illustration" aria-hidden="true">
-                                    <span></span>
-                                    <i></i>
-                                    <span></span>
-                                    <i></i>
-                                    <span></span>
-                                </div>
+                                <img className="empty-illustration" src="/static/pathways-light.png" alt="" loading="lazy" />
                                 <h3>Every starting point has possibilities.</h3>
                                 <p>
                                     Tell us a little about yours. We will show up to three routes, the conditions to meet, and what still needs checking.
@@ -964,6 +974,7 @@ def:pub App() -> JsxElement {
                                     >
                                         Catalogue connections
                                     </button>
+                                    <button type="button" aria-pressed={view == "compare"} onClick={compare_tab}>Compare routes</button>
                                     <button
                                         type="button"
                                         aria-pressed={view == "activity"}
@@ -1123,6 +1134,8 @@ def:pub App() -> JsxElement {
                                             }}
                                         </section>
                                     </div>
+                                } elif view == "compare" {
+                                    <RouteComparison routes={rows(result, "candidates")} />
                                 } elif view == "graph" {
                                     <section className="graph-view">
                                         <h3>What the catalogue connects</h3>
@@ -1242,6 +1255,7 @@ def:pub App() -> JsxElement {
                                 </p>
                             </div>
                         } }
+                        </div>
                     </section>
                 </div>
                 <section className="method-note" id="how-it-works">
@@ -1261,5 +1275,6 @@ def:pub App() -> JsxElement {
                 <p>Thoughtful next steps. Clearer decisions.</p>
                 <a href="#profile">Back to your profile ↑</a>
             </footer>
+            <GuidePanel profile={payload()} profileRevision={revision.current as int} isOpen={guide_open} onClose={close_guide} />
         </div>;
 }

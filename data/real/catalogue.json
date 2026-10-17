@@ -1,7 +1,7 @@
 {
   "catalogue_mode": "real",
-  "version": "2026.10.17-all-fields-evidence-v3",
-  "description": "Curated discovery catalogue: 31 real programmes across 12 fields; claim-level official sources, partial admission rules, one evidenced English diploma-to-degree route, and explicit unknown costs/intakes.",
+  "version": "2026.10.17-practical-alternatives-v4",
+  "description": "Curated discovery catalogue: 37 real offerings across 12 fields and seven providers; six practical training alternatives, claim-level official sources, partial admission rules, one evidenced English diploma-to-degree application route, and explicit unknown complete costs/intakes.",
   "domains": [
     {
       "id": "it",
@@ -4470,6 +4470,740 @@
         "medical studies",
         "doctor",
         "mbbs"
+      ]
+    },
+    {
+      "id": "LK-TOURISM-32",
+      "title": "Craft Level Course - Professional Cookery",
+      "institution": "Sri Lanka Institute of Tourism & Hotel Management",
+      "institution_type": "state_training_institute",
+      "campus": "Confirm selected SLITHM school; published cookery availability excludes Batticaloa",
+      "delivery_mode": "unknown",
+      "domain_ids": [
+        "tourism"
+      ],
+      "award_id": "LK-TOURISM-32-AWARD",
+      "duration_months": 3,
+      "upfront_cost_lkr": null,
+      "monthly_cost_lkr": null,
+      "travel_monthly_lkr": null,
+      "slqf_level": null,
+      "nvq_level": null,
+      "terminal": true,
+      "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+      "requirements": {
+        "op": "all",
+        "conditions": [
+          {
+            "field": "institution_confirmation",
+            "value": true,
+            "note": "Confirm age 16 or above, studied up to G.C.E. O/L, school availability and current selection."
+          }
+        ]
+      },
+      "claims": [
+        {
+          "id": "LK-TOURISM-32-programme_identity",
+          "field": "programme_identity",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Official provider lists this specialisation."
+        },
+        {
+          "id": "LK-TOURISM-32-entry_requirements",
+          "field": "entry_requirements",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Published entry: at least 16 years old and studied up to O/L; individual acceptance remains unconfirmed."
+        },
+        {
+          "id": "LK-TOURISM-32-fees",
+          "field": "fees",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Complete tuition, payment timing, materials, travel and living costs remain unknown; costs are null."
+        },
+        {
+          "id": "LK-TOURISM-32-recognition",
+          "field": "recognition",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Independent course accreditation and any occupational licensing have not been checked."
+        },
+        {
+          "id": "LK-TOURISM-32-progression",
+          "field": "progression",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "No onward edge or admission guarantee is represented."
+        },
+        {
+          "id": "LK-TOURISM-32-duration",
+          "field": "duration",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Provider lists 3 months for this course; intake dates and delays are unconfirmed."
+        },
+        {
+          "id": "LK-TOURISM-32-delivery_mode",
+          "field": "delivery_mode",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Exact study-mode classification is not established."
+        },
+        {
+          "id": "LK-TOURISM-32-current_intake",
+          "field": "current_intake",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Page announces December 2026; application window, seats and individual acceptance require confirmation."
+        },
+        {
+          "id": "LK-TOURISM-32-published_fee_components",
+          "field": "published_fee_components",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Page lists LKR 1,000 registration, LKR 7,500 monthly tuition and LKR 1,000 examination; complete costs and payment timing remain unconfirmed."
+        }
+      ],
+      "description": "Beginner hospitality craft specialisation. Confirm age, educational history, local availability and selection; no A/L-pass requirement is listed on this course page.",
+      "delivery_mode_status": "unreviewed",
+      "duration_status": "verified",
+      "admission_scope": "ol_study_age_and_institution_confirmation_required",
+      "goal_tags": [
+        "cookery",
+        "cooking",
+        "hospitality",
+        "professional cookery"
+      ]
+    },
+    {
+      "id": "LK-TOURISM-33",
+      "title": "Craft Level Course - Hotel Reception",
+      "institution": "Sri Lanka Institute of Tourism & Hotel Management",
+      "institution_type": "state_training_institute",
+      "campus": "Confirm selected SLITHM school; published reception availability excludes Batticaloa and Jaffna",
+      "delivery_mode": "unknown",
+      "domain_ids": [
+        "tourism"
+      ],
+      "award_id": "LK-TOURISM-33-AWARD",
+      "duration_months": 3,
+      "upfront_cost_lkr": null,
+      "monthly_cost_lkr": null,
+      "travel_monthly_lkr": null,
+      "slqf_level": null,
+      "nvq_level": null,
+      "terminal": true,
+      "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+      "requirements": {
+        "op": "all",
+        "conditions": [
+          {
+            "field": "institution_confirmation",
+            "value": true,
+            "note": "Confirm age 16 or above, studied up to G.C.E. O/L, school availability and current selection."
+          }
+        ]
+      },
+      "claims": [
+        {
+          "id": "LK-TOURISM-33-programme_identity",
+          "field": "programme_identity",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Official provider lists this specialisation."
+        },
+        {
+          "id": "LK-TOURISM-33-entry_requirements",
+          "field": "entry_requirements",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Published entry: at least 16 years old and studied up to O/L; individual acceptance remains unconfirmed."
+        },
+        {
+          "id": "LK-TOURISM-33-fees",
+          "field": "fees",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Complete tuition, payment timing, materials, travel and living costs remain unknown; costs are null."
+        },
+        {
+          "id": "LK-TOURISM-33-recognition",
+          "field": "recognition",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Independent course accreditation and any occupational licensing have not been checked."
+        },
+        {
+          "id": "LK-TOURISM-33-progression",
+          "field": "progression",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "No onward edge or admission guarantee is represented."
+        },
+        {
+          "id": "LK-TOURISM-33-duration",
+          "field": "duration",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Provider lists 3 months for this course; intake dates and delays are unconfirmed."
+        },
+        {
+          "id": "LK-TOURISM-33-delivery_mode",
+          "field": "delivery_mode",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Exact study-mode classification is not established."
+        },
+        {
+          "id": "LK-TOURISM-33-current_intake",
+          "field": "current_intake",
+          "status": "unreviewed",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Page announces December 2026; application window, seats and individual acceptance require confirmation."
+        },
+        {
+          "id": "LK-TOURISM-33-published_fee_components",
+          "field": "published_fee_components",
+          "status": "verified",
+          "source_url": "https://www.slithm.edu.lk/hotel_hospitality/craft-course/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Page lists LKR 1,000 registration, LKR 4,000 monthly tuition and LKR 1,000 examination; complete costs and payment timing remain unconfirmed."
+        }
+      ],
+      "description": "Beginner hospitality craft specialisation. Confirm age, educational history, local availability and selection; no A/L-pass requirement is listed on this course page.",
+      "delivery_mode_status": "unreviewed",
+      "duration_status": "verified",
+      "admission_scope": "ol_study_age_and_institution_confirmation_required",
+      "goal_tags": [
+        "hotel reception",
+        "front office",
+        "hospitality"
+      ]
+    },
+    {
+      "id": "LK-ENGINEERING-34",
+      "title": "Electrician",
+      "institution": "Department of Technical Education & Training",
+      "institution_type": "state_training_institute",
+      "campus": "Technical College - Gampaha",
+      "delivery_mode": "full_time",
+      "domain_ids": [
+        "engineering"
+      ],
+      "award_id": "LK-ENGINEERING-34-AWARD",
+      "duration_months": 12,
+      "upfront_cost_lkr": null,
+      "monthly_cost_lkr": null,
+      "travel_monthly_lkr": null,
+      "slqf_level": null,
+      "nvq_level": 4,
+      "terminal": true,
+      "source_url": "https://dtet.gov.lk/en/course-details/",
+      "requirements": {
+        "op": "all",
+        "conditions": [
+          {
+            "field": "institution_confirmation",
+            "value": true,
+            "note": "Confirm current college entry requirements, age, selection and intake; directory alone does not establish eligibility."
+          }
+        ]
+      },
+      "claims": [
+        {
+          "id": "LK-ENGINEERING-34-programme_identity",
+          "field": "programme_identity",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Official directory lists this exact course at the named college."
+        },
+        {
+          "id": "LK-ENGINEERING-34-entry_requirements",
+          "field": "entry_requirements",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory does not establish current entry or selection conditions."
+        },
+        {
+          "id": "LK-ENGINEERING-34-fees",
+          "field": "fees",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Complete tuition, payment timing, materials, travel and living costs remain unknown; costs are null."
+        },
+        {
+          "id": "LK-ENGINEERING-34-recognition",
+          "field": "recognition",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Independent course accreditation and any occupational licensing have not been checked."
+        },
+        {
+          "id": "LK-ENGINEERING-34-progression",
+          "field": "progression",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "No onward edge or admission guarantee is represented."
+        },
+        {
+          "id": "LK-ENGINEERING-34-duration",
+          "field": "duration",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Provider lists 12 months for this course; intake dates and delays are unconfirmed."
+        },
+        {
+          "id": "LK-ENGINEERING-34-delivery_mode",
+          "field": "delivery_mode",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this course FT (full time)."
+        },
+        {
+          "id": "LK-ENGINEERING-34-current_intake",
+          "field": "current_intake",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "An undated directory listing does not establish an open intake."
+        },
+        {
+          "id": "LK-ENGINEERING-34-nvq_level",
+          "field": "nvq_level",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this offering NVQ 4; this is not an independent TVEC accreditation check."
+        }
+      ],
+      "description": "Practical training option in the official DTET directory. Contact this college for entry conditions, current availability and the complete cost schedule.",
+      "delivery_mode_status": "verified",
+      "duration_status": "verified",
+      "admission_scope": "vocational_entry_institution_confirmation_required",
+      "goal_tags": [
+        "electrician",
+        "electrical",
+        "electrical installation"
+      ]
+    },
+    {
+      "id": "LK-ENGINEERING-35",
+      "title": "Gas and Arc Welder",
+      "institution": "Department of Technical Education & Training",
+      "institution_type": "state_training_institute",
+      "campus": "Technical College - Gampaha",
+      "delivery_mode": "full_time",
+      "domain_ids": [
+        "engineering"
+      ],
+      "award_id": "LK-ENGINEERING-35-AWARD",
+      "duration_months": 6,
+      "upfront_cost_lkr": null,
+      "monthly_cost_lkr": null,
+      "travel_monthly_lkr": null,
+      "slqf_level": null,
+      "nvq_level": 3,
+      "terminal": true,
+      "source_url": "https://dtet.gov.lk/en/course-details/",
+      "requirements": {
+        "op": "all",
+        "conditions": [
+          {
+            "field": "institution_confirmation",
+            "value": true,
+            "note": "Confirm current college entry requirements, age, selection and intake; directory alone does not establish eligibility."
+          }
+        ]
+      },
+      "claims": [
+        {
+          "id": "LK-ENGINEERING-35-programme_identity",
+          "field": "programme_identity",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Official directory lists this exact course at the named college."
+        },
+        {
+          "id": "LK-ENGINEERING-35-entry_requirements",
+          "field": "entry_requirements",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory does not establish current entry or selection conditions."
+        },
+        {
+          "id": "LK-ENGINEERING-35-fees",
+          "field": "fees",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Complete tuition, payment timing, materials, travel and living costs remain unknown; costs are null."
+        },
+        {
+          "id": "LK-ENGINEERING-35-recognition",
+          "field": "recognition",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Independent course accreditation and any occupational licensing have not been checked."
+        },
+        {
+          "id": "LK-ENGINEERING-35-progression",
+          "field": "progression",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "No onward edge or admission guarantee is represented."
+        },
+        {
+          "id": "LK-ENGINEERING-35-duration",
+          "field": "duration",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Provider lists 6 months for this course; intake dates and delays are unconfirmed."
+        },
+        {
+          "id": "LK-ENGINEERING-35-delivery_mode",
+          "field": "delivery_mode",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this course FT (full time)."
+        },
+        {
+          "id": "LK-ENGINEERING-35-current_intake",
+          "field": "current_intake",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "An undated directory listing does not establish an open intake."
+        },
+        {
+          "id": "LK-ENGINEERING-35-nvq_level",
+          "field": "nvq_level",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this offering NVQ 3; this is not an independent TVEC accreditation check."
+        }
+      ],
+      "description": "Practical training option in the official DTET directory. Contact this college for entry conditions, current availability and the complete cost schedule.",
+      "delivery_mode_status": "verified",
+      "duration_status": "verified",
+      "admission_scope": "vocational_entry_institution_confirmation_required",
+      "goal_tags": [
+        "welding",
+        "welder",
+        "metalwork"
+      ]
+    },
+    {
+      "id": "LK-ARTS-36",
+      "title": "Tailor (Ladies or Gents)",
+      "institution": "Department of Technical Education & Training",
+      "institution_type": "state_training_institute",
+      "campus": "Technical College - Beliatta",
+      "delivery_mode": "full_time",
+      "domain_ids": [
+        "arts"
+      ],
+      "award_id": "LK-ARTS-36-AWARD",
+      "duration_months": 6,
+      "upfront_cost_lkr": null,
+      "monthly_cost_lkr": null,
+      "travel_monthly_lkr": null,
+      "slqf_level": null,
+      "nvq_level": 4,
+      "terminal": true,
+      "source_url": "https://dtet.gov.lk/en/course-details/",
+      "requirements": {
+        "op": "all",
+        "conditions": [
+          {
+            "field": "institution_confirmation",
+            "value": true,
+            "note": "Confirm current college entry requirements, age, selection and intake; directory alone does not establish eligibility."
+          }
+        ]
+      },
+      "claims": [
+        {
+          "id": "LK-ARTS-36-programme_identity",
+          "field": "programme_identity",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Official directory lists this exact course at the named college."
+        },
+        {
+          "id": "LK-ARTS-36-entry_requirements",
+          "field": "entry_requirements",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory does not establish current entry or selection conditions."
+        },
+        {
+          "id": "LK-ARTS-36-fees",
+          "field": "fees",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Complete tuition, payment timing, materials, travel and living costs remain unknown; costs are null."
+        },
+        {
+          "id": "LK-ARTS-36-recognition",
+          "field": "recognition",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Independent course accreditation and any occupational licensing have not been checked."
+        },
+        {
+          "id": "LK-ARTS-36-progression",
+          "field": "progression",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "No onward edge or admission guarantee is represented."
+        },
+        {
+          "id": "LK-ARTS-36-duration",
+          "field": "duration",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Provider lists 6 months for this course; intake dates and delays are unconfirmed."
+        },
+        {
+          "id": "LK-ARTS-36-delivery_mode",
+          "field": "delivery_mode",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this course FT (full time)."
+        },
+        {
+          "id": "LK-ARTS-36-current_intake",
+          "field": "current_intake",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "An undated directory listing does not establish an open intake."
+        },
+        {
+          "id": "LK-ARTS-36-nvq_level",
+          "field": "nvq_level",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this offering NVQ 4; this is not an independent TVEC accreditation check."
+        }
+      ],
+      "description": "Practical training option in the official DTET directory. Contact this college for entry conditions, current availability and the complete cost schedule.",
+      "delivery_mode_status": "verified",
+      "duration_status": "verified",
+      "admission_scope": "vocational_entry_institution_confirmation_required",
+      "goal_tags": [
+        "tailoring",
+        "tailor",
+        "garment",
+        "sewing"
+      ]
+    },
+    {
+      "id": "LK-AGRICULTURE-37",
+      "title": "Fruit and Vegetable Processor",
+      "institution": "Department of Technical Education & Training",
+      "institution_type": "state_training_institute",
+      "campus": "Technical College - Kuliyapitiya",
+      "delivery_mode": "full_time",
+      "domain_ids": [
+        "agriculture"
+      ],
+      "award_id": "LK-AGRICULTURE-37-AWARD",
+      "duration_months": 6,
+      "upfront_cost_lkr": null,
+      "monthly_cost_lkr": null,
+      "travel_monthly_lkr": null,
+      "slqf_level": null,
+      "nvq_level": 4,
+      "terminal": true,
+      "source_url": "https://dtet.gov.lk/en/course-details/",
+      "requirements": {
+        "op": "all",
+        "conditions": [
+          {
+            "field": "institution_confirmation",
+            "value": true,
+            "note": "Confirm current college entry requirements, age, selection and intake; directory alone does not establish eligibility."
+          }
+        ]
+      },
+      "claims": [
+        {
+          "id": "LK-AGRICULTURE-37-programme_identity",
+          "field": "programme_identity",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Official directory lists this exact course at the named college."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-entry_requirements",
+          "field": "entry_requirements",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory does not establish current entry or selection conditions."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-fees",
+          "field": "fees",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Complete tuition, payment timing, materials, travel and living costs remain unknown; costs are null."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-recognition",
+          "field": "recognition",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Independent course accreditation and any occupational licensing have not been checked."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-progression",
+          "field": "progression",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "No onward edge or admission guarantee is represented."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-duration",
+          "field": "duration",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Provider lists 6 months for this course; intake dates and delays are unconfirmed."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-delivery_mode",
+          "field": "delivery_mode",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this course FT (full time)."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-current_intake",
+          "field": "current_intake",
+          "status": "unreviewed",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "An undated directory listing does not establish an open intake."
+        },
+        {
+          "id": "LK-AGRICULTURE-37-nvq_level",
+          "field": "nvq_level",
+          "status": "verified",
+          "source_url": "https://dtet.gov.lk/en/course-details/",
+          "checked_on": "2026-10-17",
+          "source_year": null,
+          "note": "Directory labels this offering NVQ 4; this is not an independent TVEC accreditation check."
+        }
+      ],
+      "description": "Practical training option in the official DTET directory. Contact this college for entry conditions, current availability and the complete cost schedule.",
+      "delivery_mode_status": "verified",
+      "duration_status": "verified",
+      "admission_scope": "vocational_entry_institution_confirmation_required",
+      "goal_tags": [
+        "food processing",
+        "fruit and vegetable processing",
+        "agriculture"
       ]
     }
   ],

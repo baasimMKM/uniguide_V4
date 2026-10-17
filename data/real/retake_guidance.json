@@ -1,0 +1,50 @@
+{
+  "version": "2026.10.17-retake-guidance-v1",
+  "checked_at": "2026-10-17",
+  "advisory_only": true,
+  "sources": [
+    {
+      "id": "ugc-handbook-2025-26",
+      "title": "UGC University Admissions Handbook 2025/2026, sections 1.2 and 1.7",
+      "url": "https://www.ugc.ac.lk/downloads/admissions/Handbook_2025_26/student_handbook_english.pdf",
+      "checked_at": "2026-10-17",
+      "scope": "Academic year 2025/2026; internal undergraduate admission under this handbook. Printed pp.9 and13 (PDF pp.16 and20). Year-scoped published rules, not individual or future-intake eligibility.",
+      "statements": [
+        "Section 1.2 requires three approved A/L subject S passes in one sitting within three attempts, plus at least 30% for the Common General Paper.",
+        "A prior Common General Paper result of at least 30% within those three attempts can be considered; otherwise the handbook describes obtaining it in a later permitted attempt before registration.",
+        "Section 1.7 excludes applicants who sat A/Ls on more than three occasions from internal admission under its scope. Attempts need not be consecutive; using an earlier result does not bypass this exclusion.",
+        "Minimum requirements do not establish selection: course prerequisites, Z-score, district and other admission rules still apply."
+      ]
+    },
+    {
+      "id": "doe-private-instructions-2021",
+      "title": "Department of Examinations A/L 2021 private-candidate application and technical instructions",
+      "url": "https://doenets.lk/images/resources/NEWS/AL%20paper%20add%202021%20English%20-%201_1625816833750.pdf",
+      "checked_at": "2026-10-17",
+      "scope": "Historical 2021 examination instructions dated 5 July 2021, particularly pp.1-4 and 6. Not verified as the rules for the next examination.",
+      "statements": [
+        "The 2021 instructions provided a private-candidate application route, with attempt number recorded separately from subject choices.",
+        "The 2021 notice distinguished candidates who did not appear even for part of a paper and advised retaining the admission card as evidence of non-appearance.",
+        "It prohibited government-school pupils from applying privately while still enrolled. Confirm current school/private-candidate rules before applying."
+      ]
+    },
+    {
+      "id": "doe-current-portal",
+      "title": "Department of Examinations official online services portal",
+      "url": "https://onlineexams.gov.lk/",
+      "checked_at": "2026-10-17",
+      "scope": "Official portal checked on 17 October 2026. A portal listing is not evidence that a future A/L application window is open.",
+      "statements": [
+        "The official portal provides separate private and school login routes and examination-specific notices.",
+        "The checked page did not establish a next-examination retake application window, fee or individual permission."
+      ]
+    }
+  ],
+  "policy_notes": [
+    "[ugc-handbook-2025-26] Sitting an examination again is distinct from eligibility for UGC internal admission. Do not treat the handbook attempt limit as a universal ban on further examination sittings.",
+    "[ugc-handbook-2025-26] Do not combine main-subject passes from different sittings to claim the handbook minimum. Its stated earlier-result provision concerns the Common General Paper.",
+    "[ugc-handbook-2025-26] This guidance is year-scoped and advisory. Confirm the relevant handbook, course requirements and personal admission history with UGC; no selection outcome is established.",
+    "[doe-private-instructions-2021] Non-appearance and candidate-category examples are historical, not an automatic current attempt counter. Ask the Department of Examinations how the student’s actual record is treated.",
+    "[doe-current-portal] Confirm the next examination’s published application instructions, dates and charges through the official portal. No current registration permission or fee is inferred here."
+  ]
+}

@@ -89,7 +89,7 @@ def _validate_profile(raw: dict) -> dict {
     passes = 0;
     subject_names: list[str] = [];
     for subject in (profile["al_subjects"] as list[dict]) {
-        if type(subject) != dict or type(subject.get("name")) != str or len(subject["name"] as str) > 80 or subject.get("grade") not in ["A", "B", "C", "S", "F", "unknown"] {
+        if type(subject) != dict or set(subject.keys()) != {"name", "grade"} or type(subject.get("name")) != str or len(subject["name"] as str) > 80 or subject.get("grade") not in ["A", "B", "C", "S", "F", "unknown"] {
             raise ValueError("Each A/L subject needs a name and a valid grade.");
         }
         subject_name = str(subject["name"]).strip();
@@ -99,6 +99,10 @@ def _validate_profile(raw: dict) -> dict {
         subject_names.append(subject_name.lower());
         subject["name"] = subject_name;
         if subject["grade"] in ["A", "B", "C", "S"] { passes = passes + 1; }
+    }
+    failures = len([s for s in (profile["al_subjects"] as list[dict]) if s["grade"] == "F"]);
+    if profile["al_passes"] is not None and (profile["al_passes"] < passes or profile["al_passes"] > 3 - failures) {
+        raise ValueError("A/L pass count contradicts the supplied known grades.");
     }
     if len(profile["al_subjects"] as list) == 3 and all([s["grade"] != "unknown" for s in (profile["al_subjects"] as list[dict])]) {
         if profile["al_passes"] is not None and profile["al_passes"] != passes { raise ValueError("A/L pass count does not match the supplied grades."); }
