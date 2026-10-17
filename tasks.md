@@ -11,7 +11,7 @@ Owner deadline: **17:00 Asia/Colombo**. Feature development is frozen; final pub
 | R04 clock/study guide | IMPLEMENTED / SCOPED REVIEW | Owner confirms guide panel opens; real guide call live_ai, three known programmes/three official sources in 2.05s. Clock ticks, focus and Escape remain independently unverified. |
 | R05 relevant security | DONE / LIMITS | Input, body, path, account-surface and model-output boundaries verified; process-local limits are not a distributed abuse-control system. |
 | R06 regression verification | DONE | 18 authored Jac modules checked; 54 native tests and ten explicit HTTP groups pass. Earlier 71 overlapping cases consolidated into 54 meaningful cases. Native client builds locally. |
-| R07 release records / publication | IN PROGRESS | Final sync, redacted secret/source audit and Git checkpoint; new hosted CI tracked separately. |
+| R07 release records / publication | DONE | Source published at 92b9d31; redacted exact-secret scan clean; native bundle rebuilt; [Linux CI](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39018179217) passed checker/native/HTTP steps for that source. |
 | U08 JacHammer | DEFERRED | Owner requested local review first. No hosting claim. |
 | U09 presentation | PREPARED / REHEARSAL NEEDED | Updated script/description; existing PDF/PPTX and 150-second silent video depict the prior release. Submission is not performed. |
 

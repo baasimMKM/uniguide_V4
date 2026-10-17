@@ -11,7 +11,7 @@
 | Real Gemini guide | live_ai, three allowlisted programme IDs/three official sources, 2.05s. A single observation, not an SLA. |
 | Owner manual UI | Retake tab and study-guide panel open. |
 | Agent browser review | Blocked by Work browser setting; current mobile/keyboard/focus/clock/comparison interaction checks not verified. |
-| Hosted Linux CI | Prior a5ff6d5 passed run 39014838908; current increment requires its own run. |
+| Hosted Linux CI | Current source 92b9d31 passed [run 39018179217](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39018179217): clean dependency install, authored-module checker, native suite and clean-server HTTP regression. |
 | Hosting/submission | Deferred / not performed. |
 
 Native coverage includes all-field matching, direct/multistage routes, transition prerequisites, unknown costs, cycle/search caps, request isolation, cash-flow fixtures (84,000/22,000 and 54,000/0), stress unknowns, planner action effects and failure modes, typed guide decisions, invented IDs, privacy context, retake validation/immutability, partial grades and nested-input rejection.

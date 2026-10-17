@@ -43,16 +43,18 @@ The owner confirmed both new retake and guide panels open in their browser. Auto
 
 ## Evidence and limits
 
-Real complete fees stay unknown. Fictional fixtures remain separate: direct **LKR 84,000 / initial gap 22,000** versus the three-stage **54,000 / zero gap**. Retake preparation example: six months, monthly spending7,000, one-off4,000, savings2,000 and contribution5,000 gives spending46,000 and extra initial savings14,000. Income forgone1,000/month is a separate6,000 opportunity cost; it is not subtracted from the contribution again.
+Real complete fees stay unknown. Fictional fixtures remain separate: direct **LKR 84,000 / initial gap 22,000** versus the three-stage **54,000 / zero gap**. Retake preparation example: six months, monthly spending 7,000, one-off 4,000, savings 2,000 and contribution 5,000 gives spending 46,000 and extra initial savings 14,000. Income forgone 1,000/month is a separate 6,000 opportunity cost; it is not subtracted from the contribution again.
 
 Jac 87.632% of nonwhitespace UTF-8 bytes; 71.666% of nonblank lines, including CSS and support scripts. The organiser's denominator remains unconfirmed; no unconditional 80% compliance claim is made. No Linguist overrides or generated filler are used.
 
-Shared AI limits are two concurrent calls and30 calls/minute per process; this is not distributed or per-client abuse control. The SDK transport timeout is8seconds with zero retries, within bounded outer waits. Request bodies are capped at32KiB, unused account/function surfaces are denied, static traversal is rejected and API errors are redacted. This is not a comprehensive security or production certification.
+Shared AI limits are two concurrent calls and 30 calls/minute per process; this is not distributed or per-client abuse control. The SDK transport timeout is 8 seconds with zero retries, within bounded outer waits. Request bodies are capped at 32 KiB, unused account/function surfaces are denied, static traversal is rejected and API errors are redacted. This is not a comprehensive security or production certification.
 
-No accounts, saved plans, payments, loan approvals, live scraping, guaranteed transfers or job guarantees. Hosting through JacHammer is **deferred until local review**. Owner's deadline is **17:00 on17 October2026, Asia/Colombo**; aim to freeze fixes and rehearse before then.
+No accounts, saved plans, payments, loan approvals, live scraping, guaranteed transfers or job guarantees. Hosting through JacHammer is **deferred until local review**. Owner's deadline is **17:00 on 17 October 2026, Asia/Colombo**; aim to freeze fixes and rehearse before then.
 
 ## Project records and presentation
 
 [PRD](prd.md) · [Architecture](architecture.md) · [Tasks](tasks.md) · [Decisions](decisions.md) · [Memory](memory.md) · [Catalogue evidence](docs/catalogue-evidence.md)
 
 [Existing pitch PDF](docs/pitch-deck.pdf) · [PowerPoint](docs/pitch-deck.pptx) · [150-second silent walkthrough](docs/demo-walkthrough.mp4). These presentation binaries predate the new dashboard/retake increment and need an updated live demonstration or explicit prior-release label. Publication is not event submission.
+
+Current source `92b9d31` also passed [clean Linux CI](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39018179217): dependency installation, authored Jac checks, native regressions and explicit HTTP checks.

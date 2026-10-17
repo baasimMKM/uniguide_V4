@@ -17,3 +17,5 @@ Updated17October2026, Asia/Colombo. Owner's current deadline is **17:00**. Featu
 - Existing presentation video/deck/screenshots predate this increment; label them prior-release artifacts until updated. No event submission or deployment claimed.
 - Jac0.16.7 cache timestamp fast path reproduced; sync uses current mtimes, cache/dist backups preserved. Windows direct startup needs PYTHONIOENCODING=utf-8.
 - No accounts, saved plans, payments, loan approvals, scraping, job guarantees or arbitrary claims. Potential next work after deadline: printable plan, reviewed district/campus filters and sourced intake reminders.
+
+Publication: student-reality source commit `92b9d31f519ae52d2eff6a0d5e1685e522a59888` pushed to main. [Linux CI run 39018179217](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39018179217) completed successfully: clean install/check/native/HTTP. Subsequent documentation-only checkpoint records this result; hosting remains deferred. Local app remains on port 8000.
