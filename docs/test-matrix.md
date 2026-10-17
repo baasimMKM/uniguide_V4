@@ -28,3 +28,19 @@ Owner screenshots showed a broken PNG despite a valid asset path. Direct GET rep
 After this increment: five changed Jac modules check; 54 native cases pass in 0.318s; **11 HTTP groups pass** against the rebuilt authoritative server. Previous 10-group and hosted runs above refer to the preceding release. Updated hosted verification is tracked in tasks/memory. Current agent browser review remains blocked; successful HTTP delivery is not a visual-layout claim.
 
 Image-fix source `2248e2ac21e457cdf64a20d9d2316fc22a8df0a4` passed [Linux CI run 39019439501](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39019439501): clean install, all authored Jac checks, native tests and eleven actual HTTP groups. Local app remains on port 8000; current post-fix visual browser review remains unverified.
+
+
+## Agentic-depth increment (branch `agentic-depth`, 2026-10-17)
+
+Local Windows run in a fresh project `.venv` (Python 3.12.14, Jac 0.16.7, byLLM 0.6.19), provider keys blank:
+
+| Scope | Observed result |
+| --- | --- |
+| Authored-module checker | 18/18 `jac check --nowarn` passed. |
+| Native regression suite | 64/64 passed (54 prior unchanged in assertions + T55–T64). The shared guide helper now also binds the new review boundary so no case reaches a provider. |
+| HTTP regression | 12 groups passed against a clean `--no_client` server on port 8010 (H12: intents, impact question, signed plan-state resume, forgery and type rejection, guide evidence steps). |
+| Native client | `jac start` installed dependencies and built the client bundle on port 8011. |
+| Agent browser check | Built-in browser: impact-ranked question shown; answering resumed the plan at turn 2 with the next-highest-impact question; intent labels rendered; guide showed server-rendered "What to check first" items. Desktop width only; mobile/keyboard not rechecked. |
+| Live Gemini | Not exercised (no key in this environment). Live multi-step behaviour is covered only by mocked-provider cases T61/T63. |
+
+New cases: T55 scripted deep loop and verified self-check; T56 invented targets, wrong intents, cost-unknown stress, false critique reasons, same-field and unknown variants rejected; T57 preconditions; T58 what-ifs isolated and capped; T59 impact ranking; T60 signed state resume, three-question cap, tampering/domain/expiry rejection, no finances in token; T61 mocked live loop observes tool results and never receives savings/budget/district; T62 action budget termination; T63 live evidence review renders catalogue claim text; T64 invalid/failed review falls back to evidence-ranked rules.

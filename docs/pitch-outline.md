@@ -14,7 +14,7 @@ The current visual deck uses count-independent regression wording. Keep “Local
 
 Core browser QA is complete for the tested local journeys: business/accounting discovery, mobile hospitality layout, dark theme and keyboard interaction, evidence links, the O/L English follow-up and F-grade re-evaluation, unknown-cost stress, fictional financial oracles, and network-error/retry handling. This is a scoped local check, not a claim of every browser, device or accessibility condition.
 
-The bounded provider uses the native Jac public SDK-parameter extension: eight-second SDK timeout, zero retries, outer min(10 seconds, remaining 15-second deadline), and zero stream/output retries. This implementation detail belongs in speaker notes, not the student decision flow.
+The bounded provider uses the native Jac public SDK-parameter extension: eight-second SDK timeout, zero retries, outer min(10 seconds, remaining 20-second planner deadline), and zero stream/output retries. This implementation detail belongs in speaker notes, not the student decision flow.
 
 ## Publication and source measurement snapshot — 17 October 2026
 

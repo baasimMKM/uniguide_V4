@@ -1,6 +1,7 @@
 """Offline regression suite. Ordinary profiles disable AI; provider tests bind mocks; graph fixtures never touch root."""
 import copy;
 import json;
+import base64;
 import os;
 import time;
 import threading;
@@ -10,13 +11,13 @@ import from contextlib { AbstractContextManager }
 import from email.message { Message }
 import from services.engine {
     _load_catalogue, _validate_profile, _requirements, _cashflow, _candidate, _stress, _sort_candidates,
-    BranchSearchWalker, Catalogue, Offering, ProgressesTo
+    BranchSearchWalker, Catalogue, Offering, ProgressesTo, _route_findings, _route_stress, _unknown_impact
 }
-import from services.planner { _planning_session, _safe_model_call, _bounded_ai_call, PlannerDecision }
+import from services.planner { _planning_session, _safe_model_call, _bounded_ai_call, PlannerDecision, _encode_state }
 import from services.compat { _UniPathPageCompatibility, _UniPathAPIServer }
 import from services.gemini { BoundedGeminiModel }
 import from services.retake { _evaluate_retake, _validate_retake }
-import from services.assistant { _guide_answer, _guide_request, _safe_guide_call, AssistantDecision }
+import from services.assistant { _guide_answer, _guide_request, _safe_guide_call, AssistantDecision, GuideReview }
 import from byllm.lib { Model, MTRuntime }
 
 def profile(overrides: dict | None = None) -> dict {
@@ -732,13 +733,18 @@ test "T45 missing guide key produces fallback without provider invocation" {
     assert result["mode"] == "rules_fallback" and result["fallback_reason"];
 }
 
-def guide_with_proposal(proposal: any, p: dict | None = None, message: str = "Which programme can I explore?", history: list[dict] | None = None) -> dict {
-    with patch("services.assistant._safe_guide_call", return_value=proposal) as mocked {
-        assert getattr(_guide_answer, "__globals__")["_safe_guide_call"] is mocked;
-        with (patch.dict(os.environ, {"GOOGLE_API_KEY": "test-only", "GEMINI_API_KEY": ""}, clear=False) as AbstractContextManager[object]) {
-            result = _guide_answer(p if p is not None else profile(), message, history if history is not None else [], True);
+def guide_with_proposal(proposal: any, p: dict | None = None, message: str = "Which programme can I explore?", history: list[dict] | None = None, review: any = None) -> dict {
+    # The evidence-review boundary is always bound, so no test can reach a real provider.
+    review_patch = patch("services.assistant._safe_guide_review_call", return_value=review) if review is not None else patch("services.assistant._safe_guide_review_call", side_effect=TimeoutError("review not under test"));
+    with review_patch as review_mock {
+        assert getattr(_guide_answer, "__globals__")["_safe_guide_review_call"] is review_mock;
+        with patch("services.assistant._safe_guide_call", return_value=proposal) as mocked {
+            assert getattr(_guide_answer, "__globals__")["_safe_guide_call"] is mocked;
+            with (patch.dict(os.environ, {"GOOGLE_API_KEY": "test-only", "GEMINI_API_KEY": ""}, clear=False) as AbstractContextManager[object]) {
+                result = _guide_answer(p if p is not None else profile(), message, history if history is not None else [], True);
+            }
+            assert mocked.call_count == 1;
         }
-        assert mocked.call_count == 1;
     }
     return result;
 }
@@ -912,4 +918,240 @@ test "T54 transport guards deny unsafe requests before parser delegation" {
     handler.headers.replace_header("Content-Length", "32768"); handler.headers["Origin"] = "http://127.0.0.1:8000";
     handler.do_POST(); post.assert_called_once_with(handler);
     handler.connection.settimeout.assert_called_once_with(12.0);
+}
+
+# ---- Agentic planner: tools, preconditions, what-ifs, critique, impact, resumable state ----
+
+def ids_of(result: dict, key: str = "candidates") -> list[str] {
+    return [str(route["route_id"]) for route in (result[key] as list[dict])];
+}
+
+def actions_of(result: dict) -> list[str] {
+    return [str(event["action"]) for event in (result["decision_events"] as list[dict]) if event["action"] not in ["backtrack", "cycle_pruned"]];
+}
+
+def state_payload(token: str) -> str {
+    body = token.split(".")[0];
+    return base64.urlsafe_b64decode(body + "=" * (-len(body) % 4)).decode("utf-8");
+}
+
+test "T55 scripted deep loop runs server tools and a verified self-check" {
+    p = profile();
+    baseline = _planning_session(p);
+    top = ids_of(baseline)[0];
+    script = [{"action": "search_alternatives"}, {"action": "evaluate_candidates"},
+        {"action": "inspect_route", "target_route_id": top, "intent": "check_affordability"},
+        {"action": "stress_test", "target_route_id": top},
+        {"action": "critique", "critique_verdict": "reconsider", "critique_reason": "unexplored_blocked_option"},
+        {"action": "finish", "explanation": "UNTRUSTED PROSE"}];
+    result = _planning_session(p, script);
+    assert actions_of(result) == ["search_alternatives", "evaluate_candidates", "inspect_route", "stress_test", "critique", "finish"];
+    route = [r for r in (baseline["candidates"] as list[dict]) if r["route_id"] == top][0];
+    assert result["inspections"] == [_route_findings(route)];
+    assert result["stress_checks"] == [_route_stress(route, p)];
+    assert result["critique"]["verdict"] == "reconsider" and result["agent_metrics"]["action_budget"] == 9;
+    assert result["agent_metrics"]["routes_inspected"] == 1 and result["agent_metrics"]["stress_tests"] == 1;
+    assert ids_of(result) == ids_of(baseline), "tools must not change the deterministic ranking";
+    events = result["decision_events"] as list[dict];
+    assert [e for e in events if e["action"] == "inspect_route"][0]["intent"] == "check_affordability";
+    assert all([e["source"] == "script" for e in events if e["action"] in ["inspect_route", "stress_test", "critique", "finish"]]);
+    assert "UNTRUSTED PROSE" not in json.dumps(result);
+}
+
+test "T56 tool proposals must name real targets and true critique reasons" {
+    p = profile();
+    real_cost_unknown = profile({"catalogue_mode": "real", "domain_id": "it"});
+    unknown_cost_route = ids_of(_planning_session(real_cost_unknown))[0];
+    top = ids_of(_planning_session(p))[0];
+    proposals = [
+        (p, {"action": "inspect_route", "target_route_id": "route-invented"}),
+        (p, {"action": "inspect_route", "target_route_id": top, "intent": "conclude"}),
+        (real_cost_unknown, {"action": "stress_test", "target_route_id": unknown_cost_route}),
+        (p, {"action": "critique", "critique_verdict": "reconsider", "critique_reason": "goal_not_matched"}),
+        (p, {"action": "critique", "critique_verdict": "approve_admission"}),
+        (p, {"action": "explore_variant", "variant": "field:it"}),
+        (p, {"action": "explore_variant", "variant": "assume_admission"}),
+        (p, {"action": "ask_student", "field": "savings_lkr"})];
+    for (prof, proposal) in proposals {
+        result = _planning_session(prof, [{"action": "search_alternatives"}, {"action": "evaluate_candidates"}, proposal]);
+        assert "proposal was rejected" in result["fallback_reason"], json.dumps(proposal);
+        assert result["agent_metrics"]["rejected_proposals"] == 1;
+        assert result["inspections"] == [] and result["stress_checks"] == [] and result["critique"]["verdict"] == "not_run";
+    }
+}
+
+test "T57 preconditions gate tools before search and evaluation" {
+    for early in [{"action": "inspect_route", "target_route_id": "x"}, {"action": "critique", "critique_verdict": "consistent"},
+        {"action": "evaluate_candidates"}, {"action": "explore_variant", "variant": "assume_relocation"}] {
+        result = _planning_session(profile({"can_relocate": False}), [early]);
+        assert "proposal was rejected" in result["fallback_reason"];
+        assert actions_of(result)[:2] == ["search_alternatives", "evaluate_candidates"];
+    }
+}
+
+test "T58 what-if search is labelled separately and never changes actual routes" {
+    p = profile({"can_relocate": False});
+    snapshot = json.dumps(p, sort_keys=True);
+    plain = _planning_session(p, [{"action": "search_alternatives"}, {"action": "evaluate_candidates"}, {"action": "finish"}]);
+    explored = _planning_session(p, [{"action": "search_alternatives"}, {"action": "evaluate_candidates"},
+        {"action": "explore_variant", "variant": "assume_relocation"}, {"action": "explore_variant", "variant": "field:it"}, {"action": "finish"}]);
+    assert json.dumps(p, sort_keys=True) == snapshot;
+    assert ids_of(explored) == ids_of(plain) and ids_of(explored, "blocked_candidates") == ids_of(plain, "blocked_candidates");
+    hypotheticals = explored["hypotheticals"] as list[dict];
+    assert len(hypotheticals) == 1, "the selected field is not a what-if; second proposal must be rejected";
+    what_if = hypotheticals[0];
+    assert what_if["variant"] == "assume_relocation" and "What-if only" in what_if["note"];
+    relocated = _planning_session(profile({"can_relocate": True}));
+    for row in (what_if["routes"] as list[dict]) {
+        assert row["route_id"] not in ids_of(plain);
+        assert row["route_id"] in ids_of(relocated);
+    }
+    assert what_if["opened_count"] >= 1;
+    capped = _planning_session(profile({"can_relocate": False, "study_mode": "part_time"}), [{"action": "search_alternatives"}, {"action": "evaluate_candidates"},
+        {"action": "explore_variant", "variant": "assume_relocation"}, {"action": "explore_variant", "variant": "any_study_mode"},
+        {"action": "explore_variant", "variant": "field:it"}]);
+    assert len(capped["hypotheticals"] as list) == 2 and "proposal was rejected" in capped["fallback_reason"];
+}
+
+test "T59 questions are ranked by how many open routes the answer could change" {
+    english_a = stage("ENGLISH-A", {"field": "ol_english_grade", "value": ["A", "B", "C"], "cmp": "in"});
+    english_b = stage("ENGLISH-B", {"field": "ol_english_grade", "value": ["A", "B", "C"], "cmp": "in"});
+    stream = stage("STREAM-ONLY", {"field": "al_stream", "value": "commerce", "cmp": "=="});
+    graph = isolated_graph([english_a, english_b, stream], []);
+    p = profile({"savings_lkr": 100000});
+    with patch("services.planner._load_catalogue", return_value=graph) as mocked {
+        assert getattr(_planning_session, "__globals__")["_load_catalogue"] is mocked;
+        result = _planning_session(p);
+        overridden = _planning_session(p, [{"action": "search_alternatives"}, {"action": "evaluate_candidates"},
+            {"action": "ask_student", "field": "al_stream"}]);
+    }
+    impact = result["unknown_impact"] as list[dict];
+    assert [row["field"] for row in impact] == ["ol_english_grade", "al_stream"];
+    assert impact[0]["routes_affected"] == 2 and impact[1]["routes_affected"] == 1;
+    assert result["pending_question"]["field"] == "ol_english_grade";
+    assert "2 of 3 open routes" in result["pending_question"]["reason"];
+    assert overridden["pending_question"]["field"] == "al_stream", "a valid lower-impact choice stays allowed";
+    assert _unknown_impact(_sort_candidates((graph spawn BranchSearchWalker(profile=p)).candidates, "lowest_cost"), p, ["can_relocate"]) == [];
+}
+
+test "T60 signed plan state resumes without repeating questions and rejects tampering" {
+    english_a = stage("ENGLISH-A", {"field": "ol_english_grade", "value": ["A", "B", "C"], "cmp": "in"});
+    stream = stage("STREAM-ONLY", {"field": "al_stream", "value": "commerce", "cmp": "=="});
+    maths = stage("MATHS-ONLY", {"field": "has_maths_credit", "value": True, "cmp": "=="});
+    relocate = stage("RELOCATE-ONLY", {"field": "can_relocate", "value": True, "cmp": "=="});
+    graph = isolated_graph([english_a, stream, maths, relocate], []);
+    p = profile({"savings_lkr": 100000, "has_maths_credit": None, "can_relocate": None});
+    with patch("services.planner._load_catalogue", return_value=graph) as mocked {
+        first = _planning_session(p);
+        second = _planning_session(p, None, str(first["plan_state"]));
+        third = _planning_session(p, None, str(second["plan_state"]));
+        fourth = _planning_session(p, None, str(third["plan_state"]));
+        tampered = _planning_session(p, None, str(first["plan_state"])[:-2] + "00");
+        other_field = _planning_session(profile({"savings_lkr": 100000, "domain_id": "business", "has_maths_credit": None, "can_relocate": None}), None, str(first["plan_state"]));
+        expired = _encode_state({"v": 1, "catalogue_mode": "demo", "catalogue_version": "isolated-test", "domain_id": p["domain_id"],
+            "asked_fields": [], "turn": 1, "trail": [], "issued": int(time.time()) - 4000});
+        stale = _planning_session(p, None, expired);
+    }
+    asked = [r["pending_question"]["field"] for r in [first, second, third]];
+    assert len(set(asked)) == 3, "a resumed plan must not repeat an asked question";
+    assert fourth["pending_question"] is None, "at most three questions per planning conversation";
+    assert [first["turn"], second["turn"], third["turn"], fourth["turn"]] == [1, 2, 3, 4];
+    assert second["plan_state_status"] == "resumed" and len(second["previous_steps"] as list) >= 3;
+    for rejected in [tampered, other_field, stale] {
+        assert rejected["plan_state_status"] == "rejected" and rejected["turn"] == 1;
+    }
+    assert tampered["pending_question"]["field"] == first["pending_question"]["field"];
+    for token in [first["plan_state"], second["plan_state"]] {
+        assert len(str(token)) <= 4096 and "100000" not in state_payload(str(token));
+    }
+}
+
+def fake_agent(observation: str) -> PlannerDecision {
+    seen = json.loads(observation) as dict;
+    allowed = seen["allowed_actions"] as list[str];
+    candidates = seen["candidates"] as list[dict];
+    inspected = [row["route_id"] for row in (seen["inspections"] as list[dict])];
+    if "search_alternatives" in allowed { return PlannerDecision(action="search_alternatives", intent="establish_options"); }
+    if "evaluate_candidates" in allowed { return PlannerDecision(action="evaluate_candidates"); }
+    targets = [row["id"] for row in candidates if row["id"] not in inspected];
+    if "inspect_route" in allowed and not inspected and targets { return PlannerDecision(action="inspect_route", target_route_id=str(targets[0]), intent="verify_requirements"); }
+    if "critique" in allowed { return PlannerDecision(action="critique", critique_verdict="consistent"); }
+    return PlannerDecision(action="finish", route_ids=list(reversed([str(row["id"]) for row in candidates])), explanation="UNTRUSTED LIVE PROSE");
+}
+
+test "T61 live model loop sees tool results and never receives student finances" {
+    p = profile({"enable_ai": True, "savings_lkr": 98765432, "monthly_budget_lkr": 87654321, "home_district": "PRIVATE-DISTRICT-PROBE"});
+    with patch("services.planner._safe_model_call", side_effect=lambda observation: str, timeout: float: fake_agent(observation)) as mocked {
+        assert getattr(_planning_session, "__globals__")["_safe_model_call"] is mocked;
+        with (patch.dict(os.environ, {"GOOGLE_API_KEY": "test-only", "GEMINI_API_KEY": ""}, clear=False) as AbstractContextManager[object]) {
+            result = _planning_session(p);
+        }
+        observations = [str(call[0][0]) for call in getattr(mocked, "call_args_list")];
+    }
+    assert result["planner_mode"] == "live_ai" and result["agent_metrics"]["model_calls"] == 5;
+    assert actions_of(result) == ["search_alternatives", "evaluate_candidates", "inspect_route", "critique", "finish"];
+    assert json.loads(observations[3])["inspections"], "the next decision must observe the inspection result";
+    assert json.loads(observations[2])["actions_left"] == 6;
+    for text in observations {
+        for private in ["98765432", "87654321", "PRIVATE-DISTRICT-PROBE"] { assert private not in text; }
+    }
+    expected = _sort_candidates((_load_catalogue("demo") spawn BranchSearchWalker(profile=p)).candidates, "lowest_cost");
+    assert ids_of(result) == [str(r["route_id"]) for r in expected if r["route_status"] != "not_feasible_under_current_inputs"][:3], "model order only breaks real ties";
+    assert "UNTRUSTED LIVE PROSE" not in json.dumps(result);
+}
+
+test "T63 guide reads evidence then a live review chooses server-rendered checks" {
+    p = profile({"catalogue_mode": "real", "domain_id": "it"});
+    proposal = AssistantDecision(topic="programmes", offering_ids=["LK-IT-01"]);
+    review = GuideReview(focus=["fees", "current_intake"], next_step="contact_institution");
+    with patch("services.assistant._safe_guide_review_call", return_value=review) as review_mock {
+        with patch("services.assistant._safe_guide_call", return_value=proposal) as mocked {
+            with (patch.dict(os.environ, {"GOOGLE_API_KEY": "test-only", "GEMINI_API_KEY": ""}, clear=False) as AbstractContextManager[object]) {
+                result = _guide_answer(p, "Which software degree should I check?", [], True);
+            }
+        }
+        captured = json.loads(str(getattr(review_mock, "call_args")[0][0])) as dict;
+    }
+    assert [step["mode"] for step in (result["agent_steps"] as list[dict]) if "mode" in step] == ["live_ai", "live_ai"];
+    assert [row["id"] for row in (captured["evidence"] as list[dict])] == ["LK-IT-01"];
+    assert "profile" not in captured and "savings_lkr" not in json.dumps(captured);
+    checks = result["checks"] as list[dict];
+    assert [c["check"] for c in checks] == ["Fees and payment schedule", "Next intake"];
+    claims = {str(c["field"]): c for c in (_load_catalogue("real").data["offerings"][0]["claims"] as list[dict])};
+    assert checks[0]["note"] == str(claims["fees"]["note"])[:400] and "Not yet verified" in checks[0]["status"];
+    assert result["next_step"].startswith("Contact the institution") and result["next_step_code"] == "contact_institution";
+}
+
+test "T64 invalid or failed guide review falls back to evidence-ranked rules" {
+    p = profile({"catalogue_mode": "real", "domain_id": "it"});
+    proposal = AssistantDecision(topic="budget", offering_ids=["LK-IT-01"]);
+    for bad in [GuideReview(focus=["admission_guaranteed"]), GuideReview(focus=["fees", "fees"]),
+        GuideReview(focus=["fees"], next_step="apply_now"), GuideReview(focus=["fees", "duration", "recognition", "progression"]),
+        {"focus": ["fees"], "answer": "UNTRUSTED REVIEW PROSE"}] {
+        result = guide_with_proposal(proposal, p, "What fees must I check?", None, bad);
+        assert (result["agent_steps"] as list[dict])[2]["mode"] == "rules";
+        assert (result["checks"] as list[dict])[0]["check"] == "Fees and payment schedule";
+        assert "UNTRUSTED REVIEW PROSE" not in json.dumps(result) and "admission_guaranteed" not in json.dumps(result);
+    }
+    timed_out = guide_with_proposal(proposal, p, "What fees must I check?");
+    assert (timed_out["agent_steps"] as list[dict])[2]["mode"] == "rules" and timed_out["mode"] == "live_ai";
+    with patch("services.assistant._safe_guide_review_call", side_effect=AssertionError("review must not run offline")) as review_mock {
+        offline = _guide_answer(p, "What fees must I check for software engineering?", [], False);
+        assert review_mock.call_count == 0;
+    }
+    assert offline["mode"] == "rules_fallback" and (offline["agent_steps"] as list[dict])[2]["mode"] in ["rules", "skipped"];
+}
+
+test "T62 action budget terminates an agent that never finishes" {
+    p = profile({"catalogue_mode": "real", "domain_id": "it", "study_mode": "full_time", "can_relocate": None});
+    routes = ids_of(_planning_session(p));
+    script = [{"action": "search_alternatives"}, {"action": "evaluate_candidates"}] +
+        [{"action": "inspect_route", "target_route_id": rid} for rid in routes[:3]] +
+        [{"action": "explore_variant", "variant": "any_study_mode"}, {"action": "explore_variant", "variant": "field:business"},
+         {"action": "critique", "critique_verdict": "consistent"}, {"action": "inspect_route", "target_route_id": routes[0]}];
+    result = _planning_session(p, script);
+    assert result["agent_metrics"]["actions_taken"] == 9 and result["agent_metrics"]["action_budget"] == 8;
+    assert actions_of(result)[-1] == "finish" and "budget was reached" in str((result["decision_events"] as list[dict])[-1]["detail"]);
+    assert result["agent_metrics"]["routes_inspected"] == 3 and result["agent_metrics"]["hypotheticals_explored"] == 2;
+    assert result["candidates"] and result["agent_metrics"]["rejected_proposals"] == 0;
 }

@@ -788,6 +788,29 @@ dd {
     color: var(--muted);
     margin-top: 8px;
 }
+.activity-intent {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 13px;
+}
+.what-if-list {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+.what-if {
+    padding: 12px 0;
+    font-size: 14px;
+}
+.what-if ul {
+    padding-left: 20px;
+    margin: 8px 0;
+}
+.what-if small {
+    display: block;
+    color: var(--muted);
+}
 .method-note {
     margin-top: 64px;
     padding: 40px 0 48px;
@@ -1055,141 +1078,381 @@ button,input,select,a,summary {
     font-size: 13px;
     padding: 8px 12px;
 }
-.guide-panel {
+.chat-panel {
     position: fixed;
     inset: 0 0 0 auto;
     margin: 0;
-    width: min(460px,100%);
+    width: min(440px,100%);
     max-width: 100%;
     height: 100dvh;
     max-height: 100dvh;
     padding: 0;
     border: 0;
     border-left: 1px solid var(--border);
-    background: var(--surface);
+    background: var(--bg);
     color: var(--text);
-    overflow-y: auto;
+    overflow: hidden;
 }
-.guide-panel::backdrop {
+.chat-panel::backdrop {
     background: rgba(12,24,19,.38);
 }
-.guide-panel[open] {
+.chat-panel[open] {
     display: flex;
     flex-direction: column;
 }
-.guide-heading {
+.chat-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 24px;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--surface);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
 }
-.guide-heading h2 {
-    font-size: 22px;
-}
-.guide-heading .eyebrow {
-    margin-bottom: 4px;
-}
-.guide-intro {
-    color: var(--muted);
-    font-size: 13px;
-    padding: 20px 24px 0;
-}
-.guide-panel > .notice {
-    margin: 16px 24px 0;
+.chat-avatar {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--surface);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
     flex-shrink: 0;
 }
-.guide-conversation {
+.chat-title {
     flex: 1;
-    min-height: 160px;
-    max-height: 42vh;
-    overflow-y: auto;
-    padding: 24px;
+    min-width: 0;
 }
-.guide-empty h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
+.chat-title h2 {
+    font-size: 16px;
+    line-height: 1.3;
 }
-.guide-empty p,.guide-empty small {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.7;
-}
-.guide-empty small {
+.chat-title small {
     display: block;
-    margin-top: 16px;
+    color: var(--muted);
     font-size: 12px;
 }
-.guide-message {
-    padding: 16px 0;
-}
-.guide-message strong {
-    font-size: 11px;
-    color: var(--accent);
-}
-.guide-message p {
-    margin-top: 8px;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    font-size: 14px;
-    line-height: 1.7;
-}
-.user-message {
-    padding: 16px;
-    border-radius: 6px;
-    background: var(--raised);
-    margin-top: 12px;
-}
-.guide-loading {
+.chat-icon-button {
+    min-height: 36px;
+    min-width: 36px;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
     font-size: 13px;
-    color: var(--accent);
-    margin-top: 16px;
+    cursor: pointer;
 }
-.guide-references {
-    border-top: 1px solid var(--border);
-    padding: 16px 24px;
-    max-height: 220px;
+.chat-icon-button:hover {
+    background: var(--accent-soft);
+}
+.chat-thread {
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.chat-welcome {
+    margin: auto 0;
+    padding: 8px 4px;
+}
+.chat-welcome h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+.chat-welcome p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+.chat-starters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+}
+.chat-chip {
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+.chat-chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.chat-divider {
+    align-self: center;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+}
+.chat-row {
+    display: flex;
+    flex-direction: column;
+}
+.chat-row.user {
+    align-items: flex-end;
+}
+.chat-row.agent {
+    align-items: flex-start;
+}
+.chat-bubble {
+    max-width: 92%;
+    padding: 12px 14px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+.chat-bubble.user {
+    background: var(--accent);
+    color: var(--surface);
+    border-bottom-right-radius: 4px;
+    white-space: pre-wrap;
+}
+.chat-bubble.agent {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+}
+.chat-bubble.agent > p {
+    white-space: pre-wrap;
+}
+.chat-badge {
+    display: inline-block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+}
+.chat-badge.live {
+    color: var(--accent);
+}
+.chat-tips {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 13px;
+}
+.chat-checks {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+}
+.chat-checks h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+.chat-checks ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.chat-checks li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 5px 0;
+    font-size: 13px;
+}
+.chat-checks strong {
+    display: block;
+    font-weight: 600;
+}
+.chat-checks small {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+}
+.chat-dot {
+    width: 8px;
+    height: 8px;
+    margin-top: 7px;
+    border-radius: 50%;
     flex-shrink: 0;
 }
-.guide-references li,.guide-follow-up {
+.chat-dot.ok {
+    background: var(--accent);
+}
+.chat-dot.warn {
+    background: #c98a1b;
+}
+.chat-sources {
+    margin-top: 10px;
     font-size: 13px;
-    line-height: 1.7;
-    margin: 8px 0;
 }
-.guide-references small {
+.chat-sources summary {
+    cursor: pointer;
+    color: var(--accent);
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+}
+.chat-sources ul {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+}
+.chat-sources li {
+    padding: 4px 0;
+}
+.chat-sources small {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+}
+.chat-action {
+    margin-top: 12px;
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.chat-action:hover {
+    background: var(--accent);
+    color: var(--surface);
+}
+.chat-next {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+}
+.chat-footnote {
+    margin: 4px 6px 0;
     font-size: 11px;
+    color: var(--muted);
 }
-.guide-references a {
+.chat-typing {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    gap: 4px;
 }
-.guide-form {
+.chat-typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    animation: chat-blink 1.2s infinite ease-in-out;
+}
+.chat-typing span:nth-child(2) {
+    animation-delay: .2s;
+}
+.chat-typing span:nth-child(3) {
+    animation-delay: .4s;
+}
+.chat-typing em {
+    margin-left: 8px;
+    font-style: normal;
+    font-size: 12px;
+    color: var(--muted);
+}
+@keyframes chat-blink {
+    0%,80%,100% { opacity: .25; }
+    40% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .chat-typing span { animation: none; }
+}
+.chat-composer {
+    padding: 12px 16px 14px;
+    background: var(--surface);
     border-top: 1px solid var(--border);
-    padding: 20px 24px 24px;
     flex-shrink: 0;
 }
-.guide-form textarea {
-    width: 100%;
-    min-height: 96px;
-    max-height: 240px;
-    resize: vertical;
+.chat-composer .error {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+.chat-input {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 6px 6px 6px 14px;
     border: 1px solid var(--control-border);
-    border-radius: 6px;
-    padding: 12px;
-    font: inherit;
-    font-size: 15px;
-    color: var(--text);
+    border-radius: 22px;
     background: var(--bg);
 }
-.guide-form textarea:focus-visible {
+.chat-input:focus-within {
     outline: 3px solid var(--focus);
-    outline-offset: 3px;
+    outline-offset: 2px;
 }
-.guide-form .check-row {
-    padding: 0 0 16px;
+.chat-input textarea {
+    flex: 1;
+    min-height: 32px;
+    max-height: 140px;
+    padding: 6px 0;
+    border: 0;
+    outline: 0;
+    resize: none;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    line-height: 1.4;
+    field-sizing: content;
+}
+.chat-send {
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--surface);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.chat-send:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+.chat-consent {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-top: 10px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--muted);
+    cursor: pointer;
+}
+.chat-consent input {
+    margin-top: 2px;
+    accent-color: var(--accent);
+}
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
 }
 .method-note {
     margin-top: 32px;
@@ -1380,10 +1643,6 @@ button,input,select,a,summary {
     .view-tabs button {
         white-space: nowrap;
     }
-    .guide-heading,.guide-conversation,.guide-references,.guide-form {
-        padding-left: 20px;
-        padding-right: 20px;
-    }
     .theme-button {
         font-size: 12px;
         padding: 8px;
@@ -1465,7 +1724,6 @@ button,input,select,a,summary {
 .empty-illustration { height: clamp(132px, 18vw, 220px); object-position: right center; background: var(--raised); }
 .retake-intro { display: flow-root; }
 .retake-illustration { float: right; width: 180px; height: 132px; object-fit: contain; margin: 0 0 16px 24px; }
-.guide-illustration { display: block; width: 154px; height: 112px; object-fit: contain; margin-bottom: 16px; }
 @media (max-width: 600px) {
     .brand-art { width: 156px; height: 42px; }
     .brand-art img { width: 156px; height: 156px; }

@@ -25,9 +25,12 @@ walker:pub get_app_info {
 }
 
 walker:pub plan_pathways {
-    has profile: dict = {};
+    has profile: dict = {}, plan_state: str = "";
     can plan with Root entry {
-        try { report _planning_session(_validate_profile(self.profile)); }
+        try {
+            if type(self.plan_state) != str or len(self.plan_state) > 4096 { raise ValueError("Invalid plan state."); }
+            report _planning_session(_validate_profile(self.profile), None, self.plan_state);
+        }
         except ValueError as error { report {"status": "invalid_input", "message": str(error)}; }
     }
 }

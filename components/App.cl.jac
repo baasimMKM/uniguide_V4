@@ -357,6 +357,14 @@ def:pub App() -> JsxElement {
         guide_open = False;
         if guide_trigger.current { guide_trigger.current.focus(); }
     }
+    # The AI agent can hand off to app tools; each still runs the normal server-checked flow.
+    async def guide_action(code: str) -> None {
+        guide_open = False;
+        if code == "retake_view" { view = "retake"; return; }
+        view = "routes";
+        if code == "stress_test" and bool(result) and not stale { await test_budget(); }
+        else { await plan(); }
+    }
     def graph_tab(e: MouseEvent) -> None {
         view = "graph";
     }
@@ -426,7 +434,9 @@ def:pub App() -> JsxElement {
         loading = True;
         stress = {};
         try {
-            response = root spawn plan_pathways(profile=profile);
+            # Answering the planner's question resumes its signed, browser-held plan state.
+            resume = str(result.get("plan_state", "")) if result.get("pending_question") else "";
+            response = root spawn plan_pathways(profile=profile, plan_state=resume);
             if ticket != revision.current {
                 return;
             }
@@ -512,7 +522,7 @@ def:pub App() -> JsxElement {
                 </a>
                 <div className="header-right">
                     <LiveClock />
-                    <button type="button" ref={guide_trigger} className="secondary-button guide-trigger" onClick={toggle_guide} aria-haspopup="dialog" aria-controls="guide-dialog" aria-expanded={guide_open}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z" /></svg>Ask study guide</button>
+                    <button type="button" ref={guide_trigger} className="secondary-button guide-trigger" onClick={toggle_guide} aria-haspopup="dialog" aria-controls="guide-dialog" aria-expanded={guide_open}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z" /></svg>AI agent</button>
                     <button
                         type="button"
                         className="quiet-button theme-button"
@@ -1235,10 +1245,41 @@ def:pub App() -> JsxElement {
                                                     <strong>
                                                         {label_for(event["action"])}
                                                     </strong>
+                                                    {if event.get("intent_label") {
+                                                        <small className="activity-intent">
+                                                            {("Why: " + str(event["intent_label"])) + (" · Gemini chose this step" if event.get("source") == "model" else "")}
+                                                        </small>
+                                                    }}
                                                     <p>{event["detail"]}</p>
                                                 </li>
                                             }}
                                         </ol>
+                                        {if int(result.get("turn", 1)) > 1 {
+                                            <p className="field-note">
+                                                {"Continuing the same plan (turn " + str(result.get("turn", 1)) + "). Questions already asked are not repeated."}
+                                            </p>
+                                        }}
+                                        {if (result.get("critique", {}) as dict).get("verdict") == "reconsider" {
+                                            <p className="notice">
+                                                {"Self-check: " + str((result["critique"] as dict).get("label", ""))}
+                                            </p>
+                                        }}
+                                        {if len(rows(result, "hypotheticals")) > 0 {
+                                            <section className="what-if-list" aria-label="What-if explorations">
+                                                <h4>What-if explorations</h4>
+                                                {for what_if in rows(result, "hypotheticals") {
+                                                    <div key={str(what_if["variant"])} className="what-if">
+                                                        <strong>{str(what_if["label"]) + ": " + str(what_if["opened_count"]) + " more route" + ("" if int(what_if["opened_count"]) == 1 else "s")}</strong>
+                                                        <ul>
+                                                            {for row in (what_if.get("routes", []) as list[dict]) {
+                                                                <li key={str(row["route_id"])}>{str(row["title"]) + " · " + route_label(row["route_status"])}</li>
+                                                            }}
+                                                        </ul>
+                                                        <small>{what_if["note"]}</small>
+                                                    </div>
+                                                }}
+                                            </section>
+                                        }}
                                         {if result.get("search_truncated") {
                                             <p className="notice">
                                                 The bounded catalogue search reached its limit. Further routes may exist.
@@ -1274,6 +1315,6 @@ def:pub App() -> JsxElement {
                 <p>Thoughtful next steps. Clearer decisions.</p>
                 <a href="#profile">Back to your profile ↑</a>
             </footer>
-            <GuidePanel profile={payload()} profileRevision={revision.current as int} isOpen={guide_open} onClose={close_guide} />
+            <GuidePanel profile={payload()} profileRevision={revision.current as int} isOpen={guide_open} onClose={close_guide} onAction={guide_action} />
         </div>;
 }

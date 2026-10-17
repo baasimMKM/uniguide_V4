@@ -411,6 +411,87 @@ def _graph_projection(catalogue: Catalogue, profile: dict, candidates: list[dict
     return {"nodes": sorted(nodes, key=lambda item: str((item as dict)["id"])), "edges": edges};
 }
 
+glob _probe_values: dict[str, list] = {
+    "can_relocate": [True, False], "al_passes": [0, 1, 2, 3], "has_maths_credit": [True, False],
+    "ol_maths_grade": ["A", "F"], "ol_english_grade": ["A", "F"],
+    "al_stream": ["physical_science", "biological_science", "commerce", "arts", "technology", "other"]
+};
+
+def _unknown_impact(candidates: list[dict], profile: dict, fields: list[str]) -> list[dict] {
+    # Rank unknown profile fields by how many open routes could change status once answered.
+    rows: list[dict] = [];
+    open_routes = [route for route in candidates if route["route_status"] != "not_feasible_under_current_inputs"];
+    for field in fields {
+        if field not in _probe_values or profile.get(field) not in [None, "unknown"] { continue; }
+        affected: list[str] = [];
+        for route in open_routes {
+            if field not in (route["unknowns"] as list[str]) { continue; }
+            statuses: list[str] = [];
+            for value in _probe_values[field] {
+                probe = dict(profile);
+                probe[field] = value;
+                if field == "ol_maths_grade" { probe["has_maths_credit"] = value in ["A", "B", "C"]; }
+                status = str(_candidate(route["steps"] as list[dict], route["transitions"] as list[dict], probe)["route_status"]);
+                if status not in statuses { statuses.append(status); }
+            }
+            if len(statuses) > 1 { affected.append(str(route["route_id"])); }
+        }
+        if affected { rows.append({"field": field, "routes_affected": len(affected), "open_routes": len(open_routes), "route_ids": affected}); }
+    }
+    return sorted(rows, key=lambda row: (-int((row as dict)["routes_affected"]), fields.index(str((row as dict)["field"]))));
+}
+
+def _route_findings(route: dict) -> dict {
+    # Deterministic lens findings for one evaluated route; the planner inspect tool.
+    cash = route["cashflow"] as dict;
+    claims = route["claims"] as list[dict];
+    by_status: dict[str, int] = {};
+    unconfirmed: list[str] = [];
+    for claim in claims {
+        status = str(claim.get("status", "unreviewed"));
+        by_status[status] = by_status.get(status, 0) + 1;
+        if status != "verified" and str(claim.get("field", "")) and str(claim.get("field", "")) not in unconfirmed {
+            unconfirmed.append(str(claim.get("field", "")));
+        }
+    }
+    return {"route_id": route["route_id"], "title": route["title"],
+        "gatekeeper": {"verdict": route["gatekeeper_verdict"], "unknown_fields": route["unknowns"]},
+        "fiscal": {"status": cash["status"], "cost_complete": cash["cost_complete"], "total_cost_lkr": cash["total_cost_lkr"],
+            "shortfall_lkr": cash["shortfall_lkr"], "duration_months": route["duration_months"]},
+        "evidence": {"status": route["evidence_status"], "claims_by_status": by_status, "unconfirmed_fields": unconfirmed[:6]},
+        "aspiration": {"status": (route["goal_alignment"] as dict)["status"]},
+        "bridge": {"stages": len(route["step_ids"] as list), "conditions": len(route["conditions"] as list)}};
+}
+
+def _route_stress(route: dict, profile: dict, scenario: str = "travel_plus_40_and_delay_6m") -> dict {
+    base = route["cashflow"] as dict;
+    stressed = _cashflow(route["steps"] as list[dict], profile, scenario);
+    known = base["cost_complete"] and stressed["cost_complete"];
+    return {"route_id": route["route_id"], "available": known,
+        "delta_total_cost_lkr": int(stressed["total_cost_lkr"]) - int(base["total_cost_lkr"]) if known else None,
+        "delta_shortfall_lkr": int(stressed["shortfall_lkr"]) - int(base["shortfall_lkr"]) if known else None,
+        "stressed_status": stressed["status"]};
+}
+
+def _hypothetical_profile(profile: dict, variant: str, domains: list[str]) -> dict | None {
+    # A copied profile for one allowlisted what-if. Returns None when the variant does not apply.
+    probe = dict(profile);
+    probe["al_subjects"] = [dict(s) for s in (profile["al_subjects"] as list[dict])];
+    probe["existing_qualifications"] = list(profile["existing_qualifications"] as list[str]);
+    if variant == "assume_relocation" {
+        if profile["can_relocate"] == True { return None; }
+        probe["can_relocate"] = True;
+    } elif variant == "any_study_mode" {
+        if profile["study_mode"] == "any" { return None; }
+        probe["study_mode"] = "any";
+    } elif variant.startswith("field:") {
+        domain = variant[6:];
+        if domain not in domains or domain == profile["domain_id"] { return None; }
+        probe["domain_id"] = domain;
+    } else { return None; }
+    return probe;
+}
+
 def _stress(profile: dict, scenario: str) -> dict {
     if scenario != "travel_plus_40_and_delay_6m" { raise ValueError("Choose a supported stress scenario."); }
     catalogue = _load_catalogue(str(profile["catalogue_mode"]));

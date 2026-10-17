@@ -7,7 +7,7 @@
 - **Gatekeeper lens:** applies pass/fail/unknown prerequisites. Later-stage eligibility is re-evaluated with the branch's accumulated qualifications.
 - **Bridge lens:** identifies sourced progression participation and exposes its conditions; never mutates the catalogue.
 - **Branch search walker:** explores graph edges using copied states, cycle guards and explicit stage/state/candidate caps. Pruning events describe work actually performed.
-- **Planner:** Gemini selects typed, allowlisted actions and known IDs. Deterministic validation can reject a proposal. A maximum of four actions and a 15-second session budget apply.
+- **Planner:** Gemini selects typed, allowlisted actions, intent codes and known IDs from a precondition-gated tool set (search, evaluate, inspect a route's lens findings, stress one route, explore a labelled what-if, ask the highest-impact question, self-check, finish). Deterministic validation can reject a proposal, and a self-check reason must be true. Eight actions (+1 after a verified self-check) and a 20-second session budget apply. Signed browser-held plan state continues a plan after a question without server storage.
 
 Student findings are request-local. Shared nodes never hold student budgets, profiles, verdicts or conversation histories. Source claims remain institution facts, not model assertions.
 

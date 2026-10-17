@@ -249,6 +249,25 @@ def _h11() {
     assert missing;
 }
 
+def _h12() {
+    first = _post("plan_pathways", {"profile": _profile({"can_relocate": None})});
+    assert first["pending_question"]["field"] == "can_relocate" and first["turn"] == 1;
+    assert "open routes" in str(first["pending_question"]["reason"]);
+    assert [e["intent_label"] for e in (first["decision_events"] as list[dict]) if e["action"] == "ask_student"];
+    assert first["agent_metrics"]["model_calls"] == 0 and first["plan_state_status"] == "none";
+    resumed = _post("plan_pathways", {"profile": _profile({"can_relocate": None}), "plan_state": first["plan_state"]});
+    assert resumed["plan_state_status"] == "resumed" and resumed["turn"] == 2;
+    assert resumed["pending_question"] is None or resumed["pending_question"]["field"] != "can_relocate";
+    forged = _post("plan_pathways", {"profile": _profile(), "plan_state": str(first["plan_state"])[:-4] + "beef"});
+    assert forged["plan_state_status"] == "rejected" and forged["turn"] == 1;
+    for bad in ["x" * 4097, 7, ["state"]] {
+        assert _post("plan_pathways", {"profile": _profile(), "plan_state": bad})["status"] == "invalid_input";
+    }
+    guide = _post("ask_guide", {"profile": _profile({"catalogue_mode": "real", "domain_id": "it"}), "message": "What fees must I check for software engineering?", "history": [], "allow_ai": False});
+    assert [step["step"] for step in (guide["agent_steps"] as list[dict])] == ["classify_question", "read_programme_evidence", "choose_checks"];
+    for check in (guide.get("checks", []) as list[dict]) { assert str(check["source_url"]) == "" or str(check["source_url"]).startswith("https://"); }
+}
+
 with entry:__main__ {
     group = "H01";
     try {
@@ -263,7 +282,8 @@ with entry:__main__ {
         group = "H09"; _h09(); print("H09 guide facts, bounded history and grade consistency PASS");
         group = "H10"; _h10(); print("H10 account denial, traversal, body bounds and headers PASS");
         group = "H11"; _h11(); print("H11 all five public PNGs, byte equality, MIME and missing image PASS");
-        print("11 HTTP regression groups passed. All valid planning requests disable AI.");
+        group = "H12"; _h12(); print("H12 agent intents, signed plan-state resume, forgery and guide evidence steps PASS");
+        print("12 HTTP regression groups passed. All valid planning requests disable AI.");
     } except Exception as error {
         print(group + " FAIL (" + str(`type(error).__name__) + ")");
         sys.exit(1);

@@ -27,3 +27,7 @@ Plan: reproduce the PNG 500 response; repair only allowlisted public-image servi
 
 
 U10 outcome: original image request reproduced as HTTP 500. Pinned Jac's default `send_static_file` raises `NotImplementedError`; the project adapter now serves only five explicit PNG names using binary bytes and image/png, without modifying the installed runtime or accepting arbitrary file paths. All five assets return 200, exact original bytes and correct MIME; a missing image returns 404; traversal protections remain intact. Five affected Jac modules check successfully, 54 native tests pass (0.318s), eleven actual HTTP groups pass, native client rebuild succeeds. Owner screenshots confirm prior clock/theme/panel rendering, not the new image fix. Independent browser control remains blocked by Work settings.
+
+## U12 — agentic depth (branch `agentic-depth`, 2026-10-17)
+
+Owner request after the freeze note: implement all nine agentic-depth suggestions step by step. Kept on a separate branch so the verified `main` remains submittable. Status: IMPLEMENTED / LOCALLY VERIFIED, not merged or published. Precondition-gated tool loop (inspect, stress, what-if, critique), intent codes, impact-ranked questions, signed browser-held plan state, three-step guide, agent metrics, UI surfaces and docs. Evidence: 18/18 modules, 64/64 native, 12 HTTP groups, client build, scoped built-in-browser check. Live Gemini multi-step behaviour unverified.
