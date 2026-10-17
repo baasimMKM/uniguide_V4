@@ -37,7 +37,7 @@ Configure `GOOGLE_API_KEY` or `GEMINI_API_KEY` only in the server environment or
 .venv\Scripts\jac.exe run scripts/audit_source.jac
 ```
 
-Latest local checks: **18 authored Jac modules checked; 54 native tests passed; 10 HTTP groups passed**. Overlapping root/council cases were consolidated after the earlier 71-case pass; assertions covering distinct boundaries remain. One real guide request returned `live_ai`, three programme IDs and three official sources in **2.05 seconds**; this is one smoke observation, not an SLA.
+Latest local checks: **18 authored Jac modules checked; 54 native tests passed; 11 HTTP groups passed**. Overlapping root/council cases were consolidated after the earlier 71-case pass; assertions covering distinct boundaries remain. One real guide request returned `live_ai`, three programme IDs and three official sources in **2.05 seconds**; this is one smoke observation, not an SLA.
 
 The owner confirmed both new retake and guide panels open in their browser. Automated local browser control remained disabled by Work settings, so new mobile, focus, comparison interactions and clock ticking are **not independently browser-verified**. Earlier screenshots and the prepared video show the prior release. See [verification](docs/test-matrix.md), [current UI checklist](docs/student-ui-review.md) and [research](docs/student-reality-research.md).
 
@@ -61,3 +61,5 @@ Current source `92b9d31` also passed [clean Linux CI](https://github.com/madukam
 
 
 Public-image repair: all five owner-provided artworks are included in the header, theme-aware welcome state, retake aid and study guide. The pinned runtime's missing binary-static hook is handled by a fixed-name project adapter. Latest local image increment passes five affected module checks, 54 native tests and **11 HTTP groups**, including exact PNG delivery/MIME. New visual layout review remains unverified because browser control is blocked.
+
+The image-fix source `2248e2a` passed [Linux CI](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39019439501), including the five-image HTTP delivery regression.
