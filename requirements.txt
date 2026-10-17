@@ -1,0 +1,1 @@
+# Jac 0.34.23 (including byLLM) is provided by the runtime; no Python pins needed.

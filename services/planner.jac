@@ -106,7 +106,7 @@ def _bounded_ai_call(callback: any, observation: str, timeout: float) -> any {
     # Preserve the request's read-only call context across the timeout worker.
     context = contextvars.copy_context();
     future = _pool.submit(context.run, callback, observation);
-    future.add_done_callback(lambda done: _slots.release());
+    future.add_done_callback(lambda (done: any) { _slots.release(); });
     return future.result(timeout=timeout);
 }
 
@@ -144,7 +144,7 @@ def _read_plan_state(token: str, profile: dict, version: str) -> dict | None {
     if type(token) != str or not token or len(token) > 4096 or token.count(".") != 1 { return None; }
     (body, signature) = token.split(".");
     expected = hmac.new(_state_key, body.encode("ascii", "ignore"), hashlib.sha256).hexdigest();
-    if not hmac.compare_digest(expected, signature) { return None; }
+    if not hmac.compare_digest(expected.encode("ascii"), signature.encode("ascii", "ignore")) { return None; }
     decoded: any = None;
     try {
         decoded = json.loads(base64.urlsafe_b64decode(body + "=" * (-len(body) % 4)).decode("utf-8"));
@@ -403,7 +403,7 @@ def _planning_session(profile: dict, scripted: list[dict] | None = None, plan_st
             if order {
                 rank: dict[str, int] = {rid: index for (index, rid) in enumerate(order)};
                 # Model ordering only breaks ties after the student's checked priorities.
-                candidates = sorted(candidates, key=lambda item: _candidate_priority(item as dict, preference) + (rank.get(str((item as dict)["route_id"]), 999), str((item as dict)["route_id"]))) as list[dict];
+                candidates = sorted(candidates, key=lambda (item: any) { _candidate_priority(item as dict, preference) + (rank.get(str((item as dict)["route_id"]), 999), str((item as dict)["route_id"])); }) as list[dict];
             }
             # Free-form model prose is untrusted; display facts from the engine.
             detail = "Returned the best available routes with their conditions and sources.";

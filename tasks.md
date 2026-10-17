@@ -31,3 +31,9 @@ U10 outcome: original image request reproduced as HTTP 500. Pinned Jac's default
 ## U12 — agentic depth (branch `agentic-depth`, 2026-10-17)
 
 Owner request after the freeze note: implement all nine agentic-depth suggestions step by step. Kept on a separate branch so the verified `main` remains submittable. Status: IMPLEMENTED / LOCALLY VERIFIED, not merged or published. Precondition-gated tool loop (inspect, stress, what-if, critique), intent codes, impact-ranked questions, signed browser-held plan state, three-step guide, agent metrics, UI surfaces and docs. Evidence: 18/18 modules, 64/64 native, 12 HTTP groups, client build, scoped built-in-browser check. Live Gemini multi-step behaviour unverified.
+
+## U13 — Jac 0.34.23 port for JacHammer (branch `jac-0.34.23`, 2026-10-17)
+
+JacHammer cannot fetch 0.16.7 (`pinned_jac_fetch_failed`, HTTP 404); its prebuilt releases start at 0.37.1 and the owner chose 0.34.23. Port: nested `[?:Offering]` filters, `lambda (x: T) { ... }` form, `graph ++>` returns the node (no `[0]`), byLLM from `jaclang.byllm`, bytes for `hmac.compare_digest`, pins removed, `compat.jac` reduced to a stub (0.34 serves `assets/` at `/static` natively).
+
+Verified with the official `jac-0.34.23-linux-x86_64` binary (sha256 matched) in WSL: 17/17 modules check; 59/59 native tests (T29, T30, T32, T34, T54 removed because they test 0.16.7 internals); HTTP H01–H06, H08, H09, H12 pass; PNGs byte-equal, missing image 404. Open: H07 fails because 0.34 returns Python tracebacks with internal paths for unknown request fields (still rejected); H10 (body caps, origin checks, account-route denial) and H11's `nosniff` header are not ported. Client bundle not built locally — this machine's WSL network truncates npm downloads — so the UI on 0.34 is unverified until JacHammer builds it. GitHub CI still installs from requirements.txt and needs updating for 0.34.

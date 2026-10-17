@@ -1,4 +1,4 @@
-"""Offline regression suite. Ordinary profiles disable AI; provider tests bind mocks; graph fixtures never touch root."""
+"""Offline regression suite (Jac 0.34.23 build: 0.16.7 adapter/SDK cases T29, T30, T32, T34, T54 removed). Ordinary profiles disable AI; provider tests bind mocks; graph fixtures never touch root."""
 import copy;
 import json;
 import base64;
@@ -14,11 +14,11 @@ import from services.engine {
     BranchSearchWalker, Catalogue, Offering, ProgressesTo, _route_findings, _route_stress, _unknown_impact
 }
 import from services.planner { _planning_session, _safe_model_call, _bounded_ai_call, PlannerDecision, _encode_state }
-import from services.compat { _UniPathPageCompatibility, _UniPathAPIServer }
 import from services.gemini { BoundedGeminiModel }
 import from services.retake { _evaluate_retake, _validate_retake }
 import from services.assistant { _guide_answer, _guide_request, _safe_guide_call, AssistantDecision, GuideReview }
-import from byllm.lib { Model, MTRuntime }
+import from jaclang.byllm.lib { Model }
+import from jaclang.byllm.mtir { MTRuntime }
 
 def profile(overrides: dict | None = None) -> dict {
     raw = {"catalogue_mode": "demo", "enable_ai": False, "al_passes": 3,
@@ -37,7 +37,11 @@ def fixture(offering_id: str) -> dict {
 def isolated_graph(records: list[dict], transitions: list[dict]) -> Catalogue {
     graph = Catalogue(mode="demo", version="isolated-test", data={"offerings": records, "transitions": transitions});
     nodes: dict[str, Offering] = {};
-    for record in records { nodes[str(record["id"])] = (graph ++> Offering(record=record))[0] as Offering; }
+    for record in records {
+        stage_node = Offering(record=record);
+        graph ++> stage_node;
+        nodes[str(record["id"])] = stage_node;
+    }
     for transition in transitions {
         nodes[str(transition["from_id"])] +>: ProgressesTo(record=transition) :+> nodes[str(transition["to_id"])];
     }
@@ -424,33 +428,6 @@ test "T28 valid model ordering may break an actual preference tie" {
 }
 
 
-test "T29 public error sanitization removes details without sending a second response" {
-    payload = {"error": "PRIVATE INTERNAL DETAIL", "traceback": "PRIVATE STACK",
-        "data": {"error": "PRIVATE NESTED DETAIL", "traceback": "PRIVATE NESTED STACK"}};
-    handler = Mock();
-    outcome = _UniPathPageCompatibility.send_json(handler, 500, payload);
-    assert outcome is None;
-    assert handler.mock_calls == [], "sanitizer must leave response sending to the core hook";
-    assert str(payload["error"]).startswith("Request rejected");
-    assert str((payload["data"] as dict)["error"]).startswith("Request rejected");
-    assert "traceback" not in payload and "traceback" not in (payload["data"] as dict);
-    assert "PRIVATE" not in json.dumps(payload);
-}
-
-test "T30 successful report and success envelope are not altered by sanitizer" {
-    successes: list[dict] = [
-        {"reports": [{"status": "ready", "message": "Valid result"}]},
-        {"ok": True, "type": "response", "data": {"reports": [{"status": "ready"}]}, "error": None}
-    ];
-    for payload in successes {
-        snapshot = copy.deepcopy(payload);
-        handler = Mock();
-        outcome = _UniPathPageCompatibility.send_json(handler, 200, payload);
-        assert outcome is None and handler.mock_calls == [];
-        assert payload == snapshot, "successful response must remain unchanged";
-    }
-}
-
 test "T31 malformed provider object falls back without inventing facts" {
     invalid = {"action": "finish", "route_ids": ["INVENTED-ROUTE"], "total_cost_lkr": 1,
         "explanation": "UNTRUSTED MALFORMED FACT"};
@@ -472,32 +449,6 @@ test "T31 malformed provider object falls back without inventing facts" {
     assert "INVENTED-ROUTE" not in json.dumps(result) and "UNTRUSTED MALFORMED FACT" not in json.dumps(result);
     assert elapsed < 1.0;
 }
-
-
-test "T32 canonical handler factory sanitizes then delegates exactly once" {
-    original_send = Mock();
-    fake_base = `type("FixtureResponseHandler", (), {"_send_response": original_send,
-        "do_POST": Mock(), "do_GET": Mock(), "send_header": Mock(), "end_headers": Mock()});
-    shell = object.__new__(_UniPathAPIServer) as _UniPathAPIServer;
-    with patch("jaclang.runtimelib.server.JacAPIServer.create_handler", return_value=fake_base) as factory {
-        handler_class = shell.create_handler();
-        assert factory.call_count == 1;
-    }
-    handler = handler_class();
-    response = Mock(data={"error": "PRIVATE CANONICAL ERROR", "traceback": "PRIVATE STACK"}, body=None);
-    send = getattr(handler_class, "_send_response");
-    send(handler, response);
-    original_send.assert_called_once_with(handler, response);
-    assert "traceback" not in (response.data as dict);
-    assert "PRIVATE" not in json.dumps(response.data);
-    original_send.reset_mock();
-    good_data = {"reports": [{"status": "ready", "value": 54000}]};
-    success = Mock(data=copy.deepcopy(good_data), body=None);
-    send(handler, success);
-    original_send.assert_called_once_with(handler, success);
-    assert success.data == good_data;
-}
-
 
 
 glob _context_probe: ContextVar[str] = ContextVar("unipath-test-context", default="unset");
@@ -525,32 +476,6 @@ test "T33 provider thread preserves caller context and releases its slot" {
         }
     }
     assert _context_probe.get() == "unset";
-}
-
-test "T34 actual SDK parameters retain typed request and enforce timeout without retries" {
-    messages = [{"role": "user", "content": "offline parameter probe"}];
-    schema = {"type": "json_schema", "json_schema": {"name": "FixtureDecision", "schema": {"type": "object", "properties": {"action": {"type": "string"}}}}};
-    runtime = MTRuntime(messages=[], resp_type=PlannerDecision, stream=False, tools=[], call_params={"parallelize": False});
-    config = {"temperature": 0.1, "max_tokens": 600, "timeout": 99.0, "num_retries": 7};
-    base = Model(model_name="gemini/offline-fixture", api_key="test-only", call_params=copy.deepcopy(config));
-    bounded = BoundedGeminiModel(model_name="gemini/offline-fixture", api_key="test-only", call_params=copy.deepcopy(config));
-    with patch.object(MTRuntime, "get_msg_list", return_value=messages) as message_reader {
-        with patch.object(MTRuntime, "get_tool_list", return_value=[]) {
-            with patch.object(MTRuntime, "get_output_schema", return_value=schema) {
-                # Both real parameter builders execute; no invoke/dispatch/inference is called.
-                original = base.make_model_params(runtime);
-                actual = bounded.make_model_params(runtime);
-            }
-        }
-        assert message_reader.call_count == 2;
-    }
-    assert "timeout" not in original and "num_retries" not in original, "pinned byLLM silently drops nonstreaming call options";
-    assert actual["timeout"] == 8.0 and actual["num_retries"] == 0;
-    assert actual["model"] == "gemini/offline-fixture";
-    assert actual["messages"] == [{"role": "user", "content": "offline parameter probe\n\nSchema requirements:\n- action (string)"}];
-    assert actual["response_format"] == schema, json.dumps(actual["response_format"]);
-    assert actual["temperature"] == 0.1 and actual["max_tokens"] == 600;
-    assert {key: value for (key, value) in actual.items() if key not in ["timeout", "num_retries"]} == original;
 }
 
 test "T35 rejected typed provider proposal is honestly labelled fallback" {
@@ -874,52 +799,6 @@ test "T53 independent guide requests retain no prior question or profile state" 
     for source in (second["sources"] as list[dict]) { assert str(source["url"]).startswith("https://"); }
 }
 
-def guarded_handler_fixture() -> tuple[any, any, any] {
-    original_post = Mock(); original_get = Mock();
-    fake_base = `type("FixtureGuardHandler", (), {"_send_response": Mock(), "do_POST": original_post,
-        "do_GET": original_get, "send_header": Mock(), "end_headers": Mock(), "send_response": Mock()});
-    shell = object.__new__(_UniPathAPIServer) as _UniPathAPIServer;
-    with patch("jaclang.runtimelib.server.JacAPIServer.create_handler", return_value=fake_base) {
-        handler = shell.create_handler()();
-    }
-    handler.headers = Message();
-    handler.headers["Host"] = "127.0.0.1:8000";
-    handler.headers["Content-Type"] = "application/json";
-    handler.headers["Content-Length"] = "2";
-    handler.command = "POST"; handler.path = "/walker/health";
-    handler.connection = Mock(); handler.rfile = Mock(); handler.wfile = Mock();
-    return (handler, original_post, original_get);
-}
-
-test "T54 transport guards deny unsafe requests before parser delegation" {
-    for row in [{"path": "/user/register", "status": 404}, {"path": "/user/login", "status": 404},
-        {"length": "32769", "status": 413}, {"length": "-1", "status": 400},
-        {"length": "not-a-number", "status": 400}, {"transfer": "chunked", "status": 400},
-        {"origin": "https://attacker.invalid", "status": 403}, {"type": "text/plain", "status": 415},
-        {"duplicate": True, "status": 400}] {
-        (handler, post, get) = guarded_handler_fixture();
-        if "path" in row { handler.path = row["path"]; }
-        if "length" in row { handler.headers.replace_header("Content-Length", row["length"]); }
-        if "transfer" in row { handler.headers["Transfer-Encoding"] = row["transfer"]; }
-        if "origin" in row { handler.headers["Origin"] = row["origin"]; }
-        if "type" in row { handler.headers.replace_header("Content-Type", row["type"]); }
-        if "duplicate" in row { handler.headers["Content-Length"] = "2"; }
-        handler.do_POST();
-        post.assert_not_called(); handler.rfile.read.assert_not_called();
-        handler.send_response.assert_called_once_with(row["status"]);
-        assert handler.wfile.write.call_count == 1;
-    }
-    for path in ["/.env", "/functions", "/user/info", "/static/../../../README.md", "/static/C:/outside.txt", "/static/..\\..\\README.md", "/static/%2e%2e/%2e%2e/README.md"] {
-        (handler, post, get) = guarded_handler_fixture(); handler.path = path; handler.command = "GET";
-        handler.do_GET(); get.assert_not_called();
-        handler.send_response.assert_called_once_with(404);
-    }
-    (handler, post, get) = guarded_handler_fixture();
-    handler.headers.replace_header("Content-Length", "32768"); handler.headers["Origin"] = "http://127.0.0.1:8000";
-    handler.do_POST(); post.assert_called_once_with(handler);
-    handler.connection.settimeout.assert_called_once_with(12.0);
-}
-
 # ---- Agentic planner: tools, preconditions, what-ifs, critique, impact, resumable state ----
 
 def ids_of(result: dict, key: str = "candidates") -> list[str] {
@@ -1081,7 +960,7 @@ def fake_agent(observation: str) -> PlannerDecision {
 
 test "T61 live model loop sees tool results and never receives student finances" {
     p = profile({"enable_ai": True, "savings_lkr": 98765432, "monthly_budget_lkr": 87654321, "home_district": "PRIVATE-DISTRICT-PROBE"});
-    with patch("services.planner._safe_model_call", side_effect=lambda observation: str, timeout: float: fake_agent(observation)) as mocked {
+    with patch("services.planner._safe_model_call", side_effect=lambda (observation: str, timeout: float) { fake_agent(observation); }) as mocked {
         assert getattr(_planning_session, "__globals__")["_safe_model_call"] is mocked;
         with (patch.dict(os.environ, {"GOOGLE_API_KEY": "test-only", "GEMINI_API_KEY": ""}, clear=False) as AbstractContextManager[object]) {
             result = _planning_session(p);

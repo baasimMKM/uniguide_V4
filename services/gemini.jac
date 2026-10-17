@@ -6,7 +6,8 @@ subclass uses its public parameter extension point; installed packages
 and the generated prompt, schema and response handling remain untouched.
 The planner retains its independent twenty-second session deadline.
 """
-import from byllm.lib { Model, MTRuntime }
+import from jaclang.byllm.lib { Model }
+import from jaclang.byllm.mtir { MTRuntime }
 
 obj BoundedGeminiModel(Model) {
     override def make_model_params(mt_run: MTRuntime) -> dict {

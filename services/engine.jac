@@ -30,7 +30,9 @@ def _load_catalogue(mode: str) -> Catalogue {
         by_id: dict[str, Offering] = {};
         for record in (raw["offerings"] as list[dict]) {
             if record["id"] in by_id { raise ValueError("Duplicate catalogue ID."); }
-            by_id[record["id"]] = (graph ++> Offering(record=record))[0] as Offering;
+            offering = Offering(record=record);
+            graph ++> offering;
+            by_id[record["id"]] = offering;
         }
         for transition in (raw["transitions"] as list[dict]) {
             if transition["from_id"] not in by_id or transition["to_id"] not in by_id {
@@ -294,8 +296,8 @@ walker BranchSearchWalker {
     can search with Catalogue entry {
         frontier: list[dict] = [];
         domain = self.profile["domain_id"];
-        offerings = [-->](?:Offering);
-        for offering in (sorted(offerings, key=lambda item: str((item as Offering).record["id"])) as list[Offering]) {
+        offerings = [-->[?:Offering]];
+        for offering in (sorted(offerings, key=lambda (item: any) { str((item as Offering).record["id"]); }) as list[Offering]) {
             record: dict = offering.record;
             if domain not in record["domain_ids"] { continue; }
             requirement = _requirements(record["requirements"] as dict, self.profile, self.profile["existing_qualifications"] as list[str]);
@@ -318,12 +320,12 @@ walker BranchSearchWalker {
             if current.record.get("terminal", True) {
                 self.candidates.append(_candidate(state["path"] as list[dict], state["transitions"] as list[dict], self.profile));
             }
-            neighbours = [current ->:ProgressesTo:->](?:Offering);
+            neighbours = [current ->:ProgressesTo:->[?:Offering]];
             if len(state["path"] as list) >= self.max_steps {
                 if neighbours { self.truncated = True; }
                 continue;
             }
-            for next_node in (sorted(neighbours, key=lambda item: str((item as Offering).record["id"])) as list[Offering]) {
+            for next_node in (sorted(neighbours, key=lambda (item: any) { str((item as Offering).record["id"]); }) as list[Offering]) {
                 next_record: dict = next_node.record;
                 if domain not in next_record["domain_ids"] { continue; }
                 if next_record["id"] in [step["id"] for step in (state["path"] as list[dict])] {
@@ -350,7 +352,7 @@ walker BranchSearchWalker {
 walker LensWalker {
     has profile: dict, lens: str;
     has findings: dict[str, dict] = {};
-    can inspect with Catalogue entry { visit [-->](?:Offering); }
+    can inspect with Catalogue entry { visit [-->[?:Offering]]; }
     can evaluate with Offering entry {
         record = here.record;
         if self.profile["domain_id"] not in record["domain_ids"] { return; }
@@ -385,7 +387,7 @@ def _candidate_priority(route: dict, preference: str) -> tuple[int, int, int] {
 }
 
 def _sort_candidates(candidates: list[dict], preference: str) -> list[dict] {
-    return sorted(candidates, key=lambda item: _candidate_priority(item as dict, preference) + (str((item as dict)["route_id"]),));
+    return sorted(candidates, key=lambda (item: any) { _candidate_priority(item as dict, preference) + (str((item as dict)["route_id"]),); });
 }
 
 def _graph_projection(catalogue: Catalogue, profile: dict, candidates: list[dict]) -> dict {
@@ -393,7 +395,7 @@ def _graph_projection(catalogue: Catalogue, profile: dict, candidates: list[dict
     for name in ["Aspiration", "Fiscal", "Gatekeeper"] { lenses.append(catalogue spawn LensWalker(profile=profile, lens=name)); }
     nodes = [];
     edges = [];
-    for offering in [catalogue -->](?:Offering) {
+    for offering in [catalogue -->[?:Offering]] {
         record: dict = offering.record;
         if profile["domain_id"] not in record["domain_ids"] { continue; }
         findings = [lens.findings[record["id"]] for lens in lenses];
@@ -401,14 +403,14 @@ def _graph_projection(catalogue: Catalogue, profile: dict, candidates: list[dict
         if bridge_routes { findings.append({"lens": "Bridge", "verdict": "catalogue_route", "summary": "Appears in a catalogue progression; see the complete route conditions."}); }
         nodes.append({"id": record["id"], "title": record["title"], "institution": record["institution"],
             "evidence_status": _evidence_state(record.get("claims", []) as list[dict]), "findings": findings});
-        for next_node in [offering ->:ProgressesTo:->](?:Offering) {
+        for next_node in [offering ->:ProgressesTo:->[?:Offering]] {
             if profile["domain_id"] in next_node.record["domain_ids"] {
                 links = [edge offering ->:ProgressesTo:-> next_node];
                 edges.append({"from": record["id"], "to": next_node.record["id"], "evidence_status": _evidence_state((links[0] as ProgressesTo).record.get("claims", []) as list[dict])});
             }
         }
     }
-    return {"nodes": sorted(nodes, key=lambda item: str((item as dict)["id"])), "edges": edges};
+    return {"nodes": sorted(nodes, key=lambda (item: any) { str((item as dict)["id"]); }), "edges": edges};
 }
 
 glob _probe_values: dict[str, list] = {
@@ -438,7 +440,7 @@ def _unknown_impact(candidates: list[dict], profile: dict, fields: list[str]) ->
         }
         if affected { rows.append({"field": field, "routes_affected": len(affected), "open_routes": len(open_routes), "route_ids": affected}); }
     }
-    return sorted(rows, key=lambda row: (-int((row as dict)["routes_affected"]), fields.index(str((row as dict)["field"]))));
+    return sorted(rows, key=lambda (row: any) { (-int((row as dict)["routes_affected"]), fields.index(str((row as dict)["field"]))); });
 }
 
 def _route_findings(route: dict) -> dict {
