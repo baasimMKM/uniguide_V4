@@ -7,8 +7,7 @@ jac-version = "0.16.7"
 requires-python = ">=3.12,<3.13"
 
 [dependencies]
-jaclang = "==0.16.7"
-byllm = "==0.6.19"
+
 
 [dependencies.npm]
 react = "18.3.1"
