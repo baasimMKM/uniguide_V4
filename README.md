@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/brand-logo.png" alt="UniPath LK logo" width="160" />
+</p>
+
 # UniPath LK
 
 **Every path after A/Ls — checked, costed, and honest.**
