@@ -162,15 +162,6 @@ The native tests check fixed cash-flow figures, prerequisite and cycle handling,
 
 ---
 
-## ⚠️ Honest Limits
-
-* The catalogue is deliberately small. It is not a national directory and does not make admission decisions.
-* Many complete fees and next intakes are unconfirmed in official sources, so they are shown as unknown.
-* Some request-hardening from the earlier Jac release is not yet ported to 0.34 (see [tasks.md](tasks.md)).
-* Always confirm entry rules, fees, intakes and recognition with the institution before deciding.
-
----
-
 ## 👥 Team
 * **Team UniPath LK**, built for the **AI Hackathon 2026 Sri Lanka** (University of Moratuwa & Jaseci Labs).
 * **Repository:** [github.com/baasimMKM/uniguide_V4](https://github.com/baasimMKM/uniguide_V4)
