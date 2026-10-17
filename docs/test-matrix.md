@@ -19,3 +19,10 @@ Native coverage includes all-field matching, direct/multistage routes, transitio
 HTTP groups: H01 health/info/unique qualification IDs; H02 cash flow/full profile; H03 domains/goals; H04 stress/unknowns; H05 invalid inputs; H06 evidence; H07 tampering/error redaction; H08 retake; H09 guide/history/partial grades; H10 account denial/static traversal/body cap/security headers.
 
 Reproduce in the pinned environment: `jac test -d tests -v`, then start the server and explicitly run `jac run tests/http_regression.jac`. HTTP helpers deliberately discover zero automatic tests; the named entry point is required. Run `jac run scripts/audit_source.jac` for source proportions. Do not infer national admissions, complete browser coverage or a security certification from these checks.
+
+
+## Public-image regression increment
+
+Owner screenshots showed a broken PNG despite a valid asset path. Direct GET reproduced 500: Jac 0.16.7's binary-static hook is unimplemented. Project-local allowlisted binary serving fixes this without changing installed packages. H11 verifies all five owner PNGs through actual HTTP: 200, image/png, correct Content-Length, PNG signature and byte-for-byte equality with source assets; nonexistent image 404. Existing H10 traversal/account/body/header checks still pass.
+
+After this increment: five changed Jac modules check; 54 native cases pass in 0.318s; **11 HTTP groups pass** against the rebuilt authoritative server. Previous 10-group and hosted runs above refer to the preceding release. Updated hosted verification is tracked in tasks/memory. Current agent browser review remains blocked; successful HTTP delivery is not a visual-layout claim.

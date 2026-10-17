@@ -10,7 +10,7 @@ Updated17October2026, Asia/Colombo. Owner's current deadline is **17:00**. Featu
 - New repeat-A/L aid: separate user-estimated preparation scenario, current-route comparison, year-scoped official guidance, no future-grade/admission prediction. Example46,000spend/14,000extra initial savings/6,000separate income opportunity cost.
 - New compact dashboard, real comparison table, Colombo clock and show/hide study guide. Gemini only selects typed topics/IDs/tips; displayed facts and links are server-owned. One real guide call live_ai in2.05seconds with3programmes/3sources.
 - Final consolidated native suite54cases; the earlier71-case combined pass contained overlapping root/council cases.18authored modules checked and10HTTPgroups pass. See matrix for precise scope.
-- Jac 87.632% of nonwhitespace UTF-8 bytes; 71.666% of nonblank lines, including CSS and support scripts.
+- Jac 87.371% of nonwhitespace UTF-8 bytes; 71.707% of nonblank lines, including CSS and support scripts.
 - Provider semaphore/rate budget shared across planner+guide; process-local only. No raw provider exceptions, keys, arbitrary tools or client-computed verdicts accepted.
 - HTTP allowlist,32KiBpre-parse bound, same-origin checks, static traversal rejection and unused account denial added. Exact-key scan must be refreshed after any browser rebuild.
 - Owner manually confirmed retake tab and guide panel both open. CUA repeatedly returned Work-settings browser-disabled; this is an external capability block despite owner consent. New mobile/keyboard/clock/comparison journeys remain unverified by the agent.
@@ -19,3 +19,6 @@ Updated17October2026, Asia/Colombo. Owner's current deadline is **17:00**. Featu
 - No accounts, saved plans, payments, loan approvals, scraping, job guarantees or arbitrary claims. Potential next work after deadline: printable plan, reviewed district/campus filters and sourced intake reminders.
 
 Publication: student-reality source commit `92b9d31f519ae52d2eff6a0d5e1685e522a59888` pushed to main. [Linux CI run 39018179217](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39018179217) completed successfully: clean install/check/native/HTTP. Subsequent documentation-only checkpoint records this result; hosting remains deferred. Local app remains on port 8000.
+
+
+U10 owner screenshots revealed a real /static/pathways-light.png HTTP 500. Fixed unimplemented Jac 0.16.7 send_static_file via a project-local five-PNG allowlist; installed framework untouched. All five original owner images now used in UI. Rebuilt native client; 54 native tests and **11** HTTP groups pass, including exact binary/MIME verification and missing/traversal checks. Current source percentages above were refreshed. Browser tool still blocked, so ask for refresh without claiming a new visual review. Updated source publication/CI follows separately.

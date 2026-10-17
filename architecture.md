@@ -54,3 +54,8 @@ Desktop profile sidebar; mobile collapsible profile; compact results/comparison;
 Jac's timestamp IR fast path can accept stale caches after copies preserving old mtimes. Changed-source sync now writes current mtimes; stale generated caches/builds were preserved under backup names before recompilation. Source and dependency files are never replaced to hide a failing check.
 
 See the test matrix for current counts. Owner confirmed new panels open. Independent new browser interaction coverage remains blocked by Work settings; do not reuse earlier screenshots as current proof. Hosting stays deferred. Deadline17:00 on17October2026, Asia/Colombo.
+
+
+## Public image compatibility
+
+Jac 0.16.7 declares but does not implement the default binary send_static_file hook. The project HTTP adapter intercepts exactly five approved /static/*.png names and reads only their fixed assets/ paths, responding with image/png, byte length and revalidation caching. Path rejection precedes the allowlist; filesystem exceptions become generic 404. JavaScript/CSS keep their existing runtime routes. Installed runtime and generated outputs are unchanged.

@@ -1,10 +1,10 @@
 # Current release audit â€” 2026-10-17
 
-Pinned runtime: Python 3.12, Jac 0.16.7, byLLM 0.6.19. Authoritative local native client rebuilt successfully and health reports 37 real programmes. Source snapshot SHA-256: `a71f66ac771405bbe14e0b189df2554f44cf5fb52fe1aca1c223cd3c0305f608`.
+Pinned runtime: Python 3.12, Jac 0.16.7, byLLM 0.6.19. Authoritative local native client rebuilt successfully and health reports 37 real programmes. Source snapshot SHA-256: `890f335898838295af312667bfb955ec54aafa94258a3d62d49b6aba45ab0402`.
 
 ## Handwritten composition
 
-22 authored source files, including CSS and support code. Jac: **87.632% by nonwhitespace UTF-8 bytes** (156573/178671) and **71.666% by nonblank lines** (3751/5234). Official judging denominator is unconfirmed. Generated assets, third-party packages and filler do not establish compliance.
+22 authored source files, including CSS and support code. Jac: **87.371% by nonwhitespace UTF-8 bytes** (156573/178671) and **71.707% by nonblank lines** (3751/5234). Official judging denominator is unconfirmed. Generated assets, third-party packages and filler do not establish compliance.
 
 ## Redacted configured-secret scan
 
@@ -17,3 +17,8 @@ One configured provider secret checked locally, without logging its value. Zero 
 Owner manually confirms retake tab and guide panel open. Current independent mobile/keyboard/focus/comparison/clock browser review is blocked by Work settings. One real guide call returned live_ai in 2.05 seconds; not a latency guarantee. Current source 92b9d31 passed [Linux CI run 39018179217](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39018179217), including dependency installation, all authored-module checks, native tests and clean-server HTTP tests.
 
 Remaining limits: small catalogue, unknown complete costs/intakes, year-scoped admissions policy, process-local rather than distributed abuse control, no broad load/security/accessibility certification. JacHammer and event submission remain deferred/not performed. Existing presentation binaries show the previous release.
+
+
+## Refreshed image-fix source and exact-secret audit
+
+Current snapshot is the SHA above. Jac 158781/181731 nonwhitespace bytes; 3794/5291 nonblank lines. One configured secret has zero exact occurrences across 22 source files, 83 candidate files and 25 freshly built browser files. Earlier counts describe the prior source. Five affected modules, 54 native tests and eleven HTTP groups pass; H11 verifies actual binary delivery. New hosted CI is tracked separately from previous passed runs.

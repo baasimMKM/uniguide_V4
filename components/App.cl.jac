@@ -508,8 +508,7 @@ def:pub App() -> JsxElement {
             <a className="skip-link" href="#profile">Skip to your profile</a>
             <header className="site-header">
                 <a className="brand" href="#">
-                    <span className="brand-mark" aria-hidden="true">U</span>
-                    <span>UniPath <span className="brand-lk">LK</span></span>
+                    <span className="brand-art"><img src="/static/brand-logo.png" alt="UniPath LK" width={196} height={196} /></span>
                 </a>
                 <div className="header-right">
                     <LiveClock />
@@ -858,7 +857,7 @@ def:pub App() -> JsxElement {
                         </div>
                         {if not bool(result) {
                             <div className="empty-state">
-                                <img className="empty-illustration" src="/static/pathways-light.png" alt="" loading="lazy" />
+                                <img className="empty-illustration" src={"/static/pathways-dark.png" if dark else "/static/pathways-light.png"} alt="" loading="lazy" />
                                 <h3>Every starting point has possibilities.</h3>
                                 <p>
                                     Tell us a little about yours. We will show up to three routes, the conditions to meet, and what still needs checking.

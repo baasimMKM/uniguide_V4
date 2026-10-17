@@ -14,6 +14,7 @@ Jac 0.16.7 sends those directly through HTTPTransport, bypassing send_json.
 """
 import from importlib.metadata { version }
 import json;
+import from pathlib { Path }
 import from urllib.parse { urlsplit }
 import from jaclang.jac0core.runtime {
     hookimpl, plugin_manager, JacRuntimeImpl
@@ -41,6 +42,25 @@ def _reject_http(handler: any, status: int) -> None {
     handler.send_header("Connection", "close");
     handler.end_headers();
     handler.wfile.write(payload);
+}
+
+# The pinned runtime declares send_static_file but its default hook raises
+# NotImplementedError. Serve only these owner-approved public PNGs directly.
+def _serve_public_image(handler: any, path: str) -> bool {
+    names = ["brand-logo.png", "pathways-light.png", "pathways-dark.png", "pathway-steps.png", "study-icons.png"];
+    name = path.removeprefix("/static/");
+    if not path.startswith("/static/") or name not in names { return False; }
+    asset = Path(str(__file__)).resolve().parent.parent / "assets" / name;
+    if not asset.is_file() { _reject_http(handler, 404); return True; }
+    try { body = asset.read_bytes(); }
+    except OSError { _reject_http(handler, 404); return True; }
+    handler.send_response(200);
+    handler.send_header("Content-Type", "image/png");
+    handler.send_header("Content-Length", str(len(body)));
+    handler.send_header("Cache-Control", "public, max-age=0, must-revalidate");
+    handler.end_headers();
+    handler.wfile.write(body);
+    return True;
 }
 
 obj _UniPathAPIServer(JacAPIServer) {
@@ -80,6 +100,7 @@ obj _UniPathAPIServer(JacAPIServer) {
             if path not in ["/", "/cl/app", "/favicon.ico"] and not path.startswith("/static/") {
                 _reject_http(handler, 404); return;
             }
+            if _serve_public_image(handler, path) { return; }
             original_get(handler);
         }
         def denied(handler: any) -> None { _reject_http(handler, 405); }

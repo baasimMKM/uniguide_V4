@@ -16,3 +16,8 @@
 | D12 | Owner deadline17:00 on17October2026 Asia/Colombo. Feature freeze now; local review and rehearsal take priority. JacHammer hosting deferred by owner; no upgrade/purchase/builder action. |
 | D13 | User confirmation that both new panels open is manual smoke evidence. Agent browser control remains disabled in Work settings; do not infer unperformed mobile, focus or visual checks. |
 | D14 | Existing demo/deck/screenshots represent the prior release. Re-record or label them before presentation; publishing a repository is not submitting the event form. |
+
+
+## D-image — repair actual delivery before adding artwork
+
+Owner-reported broken images reproduced as HTTP 500. Use project-local fixed-name PNG serving because the pinned runtime binary hook is unimplemented. Reject arbitrary paths, preserve original image bytes, and test actual delivered content/MIME rather than assuming that build success or file existence proves image availability. Use light/dark landscape assets in the welcome state, the supplied wordmark in the header, pathway-steps in retake and the study icon sheet in the guide. Decorative art has empty alt; brand has a readable name.

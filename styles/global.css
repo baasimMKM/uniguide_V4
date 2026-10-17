@@ -1457,3 +1457,18 @@ button,input,select,a,summary {
         scroll-behavior: auto;
     }
 }
+
+/* Owner-provided artwork: bounded decorative surfaces, readable in both themes. */
+.brand-art { display: block; position: relative; width: 196px; height: 48px; overflow: hidden; }
+.brand-art img { position: absolute; width: 196px; height: 196px; max-width: none; left: 0; top: 50%; transform: translateY(-50%); }
+.dark .brand-art img { filter: brightness(0) invert(1); }
+.empty-illustration { height: clamp(132px, 18vw, 220px); object-position: right center; background: var(--raised); }
+.retake-intro { display: flow-root; }
+.retake-illustration { float: right; width: 180px; height: 132px; object-fit: contain; margin: 0 0 16px 24px; }
+.guide-illustration { display: block; width: 154px; height: 112px; object-fit: contain; margin-bottom: 16px; }
+@media (max-width: 600px) {
+    .brand-art { width: 156px; height: 42px; }
+    .brand-art img { width: 156px; height: 156px; }
+    .retake-illustration { width: 108px; height: 80px; margin-left: 12px; }
+    .empty-illustration { height: 140px; }
+}

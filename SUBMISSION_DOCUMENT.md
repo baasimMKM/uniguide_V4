@@ -6,6 +6,6 @@ Jac nodes, edges and request-local walkers explore bounded routes. A typed byLLM
 
 Native Jac client: profile, routes, side-by-side comparison, evidence, graph/activity, retake scenario, Colombo clock and optional study guide. Local verification: 18 checked Jac modules, 54 native tests, ten explicit HTTP groups, successful native client build and one real live_ai guide call. Owner confirms both new panels open; full current browser review remains incomplete.
 
-Jac source share is 87.632% by nonwhitespace UTF-8 bytes and 71.666% by nonblank lines, including CSS/support code. Official counting method is unconfirmed; unconditional 80% compliance is not claimed. No filler/generated source is counted.
+Jac source share is 87.371% by nonwhitespace UTF-8 bytes and 71.707% by nonblank lines, including CSS/support code. Official counting method is unconfirmed; unconditional 80% compliance is not claimed. No filler/generated source is counted.
 
 This is a hackathon prototype, not a national course directory or an admission service. Costs/intakes may need confirmation. Accounts/payments/saved plans/live scraping are out of scope. JacHammer hosting is deferred and event submission has not been performed. Existing deck/video binaries show the prior release; use the updated live-demo script for this increment.

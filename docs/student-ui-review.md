@@ -17,3 +17,6 @@ The new UI builds through the pinned Jac client toolchain. Owner manually confir
 5. At 390px, inspect profile collapse, long programme headings, comparison horizontal scrolling, panel width, keyboard focus, dark theme and page overflow.
 
 Earlier screenshots/video predate this increment. Keep them as prior-release evidence, not proof these new journeys were checked. No full WCAG, assistive-technology, multi-browser or load certification is claimed.
+
+
+Owner's subsequent screenshots confirm the clock displays seconds, both themes render and both panels appear; they also exposed a broken welcome image. U10 fixes actual binary delivery and adds the five requested artworks. All five URLs now pass exact-byte/MIME HTTP checks after a native rebuild. Browser control again reported disabled; no post-fix screenshot or new responsive-layout verification is claimed.

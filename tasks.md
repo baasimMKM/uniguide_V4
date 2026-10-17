@@ -20,3 +20,10 @@ Owner deadline: **17:00 Asia/Colombo**. Feature development is frozen; final pub
 Reproduce, isolate, fix, run the affected case and related regressions, record the result. Fixed stale Jac IR by preserving cache backups and using current write times; bounded SDK calls; corrected guide typing and a hospitality question incorrectly classified as generic study advice; validated partial grades and nested subject keys; denied unused framework accounts and unsafe static paths. Prior Linux CI narrowing error was repaired at a5ff6d5.
 
 The browser tool reports a Work-settings block despite owner consent. Owner manual panel confirmation is recorded separately from automated UI verification. No unsupported accessibility, production-readiness or deployment claims.
+
+## U10 — owner-reported broken images (2026-10-17)
+
+Plan: reproduce the PNG 500 response; repair only allowlisted public-image serving in the project Jac adapter; place all five owner-supplied assets in relevant UI surfaces. Check MIME type, byte equality, missing file and traversal rejection through actual HTTP, check changed Jac components and rebuild the native client. No eligibility or AI behavior changes. Status: DONE locally; hosted CI pending for this increment. Screenshots supplied by the owner demonstrate a real broken-image defect; previous asset presence/build checks did not verify successful binary HTTP delivery.
+
+
+U10 outcome: original image request reproduced as HTTP 500. Pinned Jac's default `send_static_file` raises `NotImplementedError`; the project adapter now serves only five explicit PNG names using binary bytes and image/png, without modifying the installed runtime or accepting arbitrary file paths. All five assets return 200, exact original bytes and correct MIME; a missing image returns 404; traversal protections remain intact. Five affected Jac modules check successfully, 54 native tests pass (0.318s), eleven actual HTTP groups pass, native client rebuild succeeds. Owner screenshots confirm prior clock/theme/panel rendering, not the new image fix. Independent browser control remains blocked by Work settings.

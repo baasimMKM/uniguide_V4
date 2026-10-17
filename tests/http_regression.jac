@@ -9,6 +9,7 @@ import sys;
 import from urllib.request { Request, urlopen }
 import from urllib.error { HTTPError }
 import from http.client { HTTPResponse }
+import from pathlib { Path }
 
 glob _base_url: str = os.environ.get("UNIPATH_TEST_BASE_URL", "http://127.0.0.1:8000").rstrip("/");
 glob _scenario: str = "travel_plus_40_and_delay_6m";
@@ -225,6 +226,29 @@ def _h10() {
     }
 }
 
+def _h11() {
+    # Actual bytes/MIME are required: asset presence or a client build cannot
+    # detect the pinned runtime's unimplemented send_static_file hook.
+    asset_root = Path(str(__file__)).resolve().parent.parent / "assets";
+    for name in ["brand-logo.png", "pathways-light.png", "pathways-dark.png", "pathway-steps.png", "study-icons.png"] {
+        request = Request(_base_url + "/static/" + name, method="GET");
+        with (urlopen(request, timeout=30) as HTTPResponse) as response {
+            body = response.read() as bytes;
+            assert response.status == 200;
+            assert response.getheader("Content-Type") == "image/png";
+            assert response.getheader("X-Content-Type-Options") == "nosniff";
+            assert int(response.getheader("Content-Length")) == len(body);
+            assert body == (asset_root / name).read_bytes();
+            assert body[:8] == b"\x89PNG\r\n\x1a\n";
+        }
+    }
+    missing = False;
+    try {
+        with (urlopen(_base_url + "/static/missing-public-image.png", timeout=30) as HTTPResponse) as response { assert False; }
+    } except HTTPError as error { assert error.code == 404; missing = True; }
+    assert missing;
+}
+
 with entry:__main__ {
     group = "H01";
     try {
@@ -238,7 +262,8 @@ with entry:__main__ {
         group = "H08"; _h08(); print("H08 retake estimates, unknowns and invalid inputs PASS");
         group = "H09"; _h09(); print("H09 guide facts, bounded history and grade consistency PASS");
         group = "H10"; _h10(); print("H10 account denial, traversal, body bounds and headers PASS");
-        print("10 HTTP regression groups passed. All valid planning requests disable AI.");
+        group = "H11"; _h11(); print("H11 all five public PNGs, byte equality, MIME and missing image PASS");
+        print("11 HTTP regression groups passed. All valid planning requests disable AI.");
     } except Exception as error {
         print(group + " FAIL (" + str(`type(error).__name__) + ")");
         sys.exit(1);
