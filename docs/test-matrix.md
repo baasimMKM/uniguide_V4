@@ -80,6 +80,5 @@ returns HTTP 401. The helper prints test names/results rather than student bodie
 
 Initial commit `d2f41e8` was published to the public GitHub repository. Its first
 hosted CI run exposed the narrowed-None planner type error. The correction
-passes the clean local checker and exact CI discovery command; the next hosted
-CI result remains pending. Jac Hammer deployment is deferred until after local
+passes the clean local checker and exact CI discovery command; hosted Linux CI [run #2](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39014838908) also passed for source `a5ff6d5`. Jac Hammer deployment is deferred until after local
 review, as requested by the user.

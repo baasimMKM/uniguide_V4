@@ -2,7 +2,7 @@
 
 **Post-A/L education pathways with visible conditions, sources and uncertainty.**
 
-This draft reflects the local prototype on 17 October 2026. The public repository and presentation files are published on GitHub. The planner fix passed clean checking and 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted CI is awaiting confirmation. Hosting is deferred by the user until local review and event submission remains pending; the language measurements below retain their method qualification. The six-slide pitch PDF/PPTX and a silent 2:30 captioned walkthrough assembled from real captured app views are prepared. The walkthrough is not a continuous screen recording.
+This draft reflects the local prototype on 17 October 2026. The public repository and presentation files are published on GitHub. The planner fix passed clean checking and 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted Linux CI [run #2](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39014838908) passed for source commit `a5ff6d5`. Hosting is deferred by the user until local review and event submission remains pending; the language measurements below retain their method qualification. The six-slide pitch PDF/PPTX and a silent 2:30 captioned walkthrough assembled from real captured app views are prepared. The walkthrough is not a continuous screen recording.
 
 ## Problem and intended users
 
@@ -31,7 +31,7 @@ The native Jac BoundedGeminiModel subclass uses byLLM 0.6.19’s public make_mod
 ## Evidence of execution
 
 - Python 3.12, Jac 0.16.7 and byLLM 0.6.19 are pinned in the project configuration.
-- The preserved-cache-quarantine baseline passed 35 native Jac tests and seven authoritative HTTP checks. A subsequent planner type-narrowing fix passed clean checking and all 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted CI is awaiting confirmation. Hosted CI status is not asserted. The matrix covers graph branches/cycles, monetary oracles, input rejection, request isolation, real-field discovery and fallback behavior.
+- The preserved-cache-quarantine baseline passed 35 native Jac tests and seven authoritative HTTP checks. A subsequent planner type-narrowing fix passed clean checking and all 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted Linux CI [run #2](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39014838908) passed for source commit `a5ff6d5`. The matrix covers graph branches/cycles, monetary oracles, input rejection, request isolation, real-field discovery and fallback behavior.
 - The current local browser journey also showed genuine AI-assisted planning through search, evaluation and a relevant O/L English question, with no fallback label on that captured request. An earlier genuine Gemini smoke request took 4.89 seconds; that separate observation is not a response-time or quality guarantee.
 - Core browser QA is complete for the tested local journeys: business/accounting discovery, mobile hospitality layout, dark theme and keyboard interaction, evidence links, the O/L English follow-up and F-grade re-evaluation, unknown-cost stress, fictional financial oracles, and network-error/retry handling. This is a scoped local check, not a claim of every browser, device or accessibility condition. Source composition has been measured as qualified below. The organiser’s method remains unconfirmed; clean checking and 35 native tests passed after the planner fix, along with all seven authoritative HTTP checks on the latest typing-fix revision. Hosting is deferred by the user until local review.
 
@@ -41,7 +41,7 @@ See [verification details](docs/test-matrix.md) and [catalogue provenance](docs/
 
 Search is bounded to four stages, 100 states and 20 candidate paths, with truncation reported. Only the best three candidate and three blocked route cards are returned. Real complete fee schedules remain unknown, so the app cannot currently establish real affordability. Professional recognition and current intake are separate confirmation tasks. The named travel/delay scenario calculates absolute changes from recorded assumptions; it does not predict survival probability.
 
-Next priorities are user review of the local app, confirmation of the hosted CI run, reconciliation of the organiser’s source-counting method, broader accessibility/device validation, reviewed catalogue coverage and complete payment schedules. Additional transfer edges require explicit institution-specific support.
+Next priorities are user review of the local app, reconciliation of the organiser’s source-counting method, broader accessibility/device validation, reviewed catalogue coverage and complete payment schedules. Additional transfer edges require explicit institution-specific support.
 
 ## Deliverable status
 
@@ -50,7 +50,7 @@ Next priorities are user review of the local app, confirmation of the hosted CI 
 | Repository URL and access check | [Public GitHub repository](https://github.com/madukamalruk/unipathlk-v2); initial commit [`d2f41e8`](https://github.com/madukamalruk/unipathlk-v2/commit/d2f41e823edb7f940b32d0d3de24ab5d6290fb46) verified |
 | Jac repository star requirement | Pending verification |
 | Source composition | Measured: custom audit 86.191% bytes / 72.892% lines; GitHub Jac 88.3%; organiser’s method unconfirmed |
-| Clean verification after planner fix | Clean checker and 35 native tests passed; all seven authoritative HTTP checks passed on this revision; hosted CI awaiting confirmation |
+| Clean verification after planner fix | Clean checker and 35 native tests passed; all seven authoritative HTTP checks passed on this revision; hosted Linux CI [run #2](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39014838908) passed for source commit `a5ff6d5` |
 | Working deployment URL | Deferred by user until local review |
 | Demonstration video | [Silent 2:30 captured-view MP4](https://github.com/madukamalruk/unipathlk-v2/blob/main/docs/demo-walkthrough.mp4) published on GitHub; event hosting/submission requirements pending |
 | Pitch deck | [Six-slide PDF](https://github.com/madukamalruk/unipathlk-v2/blob/main/docs/pitch-deck.pdf), [PowerPoint](https://github.com/madukamalruk/unipathlk-v2/blob/main/docs/pitch-deck.pptx) and preview published; final rehearsal pending |

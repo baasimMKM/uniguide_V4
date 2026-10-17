@@ -127,6 +127,5 @@ validation branch, preserving fallback behavior. A clean-cache check of all
 Initial public GitHub commit `d2f41e8` triggered a first hosted CI run that
 exposed the planner type-checking issue above. Its correction now passes a
 clean local checker, the exact CI discovery command and the authoritative HTTP
-suite. The next hosted CI result remains pending; local success is not labelled
-as a hosted CI pass. Jac Hammer deployment is deferred until after local review
+suite. Hosted Linux CI [run #2](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39014838908) passed for source `a5ff6d5`, including fresh dependency installation, checking, native tests and HTTP regressions. Jac Hammer deployment is deferred until after local review
 at the user's request.

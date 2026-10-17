@@ -2,7 +2,7 @@
 
 The prepared docs/demo-walkthrough.mp4 is a captioned walkthrough assembled from nine real local-app captures. It has no audio and is not a continuous screen recording. This script describes its actual scenes; it can also guide an optional separate spoken presentation. Never claim that captions show unrecorded clicks or live interactions between captures.
 
-Core browser QA is complete for the tested business, mobile hospitality, dark-theme/keyboard, evidence, follow-up English F-grade update, unknown-cost stress, fixture and network-error/retry journeys. The repository and presentation files are published on GitHub. The planner fix passed clean checking and 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted CI is awaiting confirmation. Hosting is deferred by the user until local review; event-specific video requirements and final submission remain pending. Rehearse the submitted revision and preserve fixture/source disclosures.
+Core browser QA is complete for the tested business, mobile hospitality, dark-theme/keyboard, evidence, follow-up English F-grade update, unknown-cost stress, fixture and network-error/retry journeys. The repository and presentation files are published on GitHub. The planner fix passed clean checking and 35 native tests; all seven authoritative HTTP checks passed on the latest typing-fix revision; hosted Linux CI [run #2](https://github.com/madukamalruk/unipathlk-v2/actions/runs/39014838908) passed for source commit `a5ff6d5`. Hosting is deferred by the user until local review; event-specific video requirements and final submission remain pending. Rehearse the submitted revision and preserve fixture/source disclosures.
 
 ## Startup for a separate live demonstration
 
