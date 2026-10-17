@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/brand-logo.png" alt="UniPath LK logo" width="160" />
+  <img src="assets/readme-logo.png" alt="UniPath LK" width="420" />
 </p>
 
 # UniPath LK
